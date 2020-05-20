@@ -1,0 +1,321 @@
+body, html {
+    margin: 0;
+    height: 100%;
+    font-family: 'Montserrat';
+    font-size: 1em;
+}
+
+body {
+    display: grid;
+    grid-template-columns:20em auto;
+    grid-template-areas:
+        "navbar contenido";
+    background-color: #2196F3;
+}
+
+/*BARRA DE NAVEGACION-------------------------------------------------------------------------------------------------------*/
+.navbar {
+    grid-area:navbar;
+    display: grid;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    grid-template-rows:6em auto;
+    grid-template-areas:
+        "navbar-nav"
+        "agendas";
+    top: 0;
+    /*height: 5rem;*/
+    background-color: #F7F7F7;
+}
+
+.agendas{
+    grid-area:navbar;
+}
+
+#logo{
+    width: 4.7rem;
+}
+
+.navbar-nav {
+    grid-area:navbar-nav;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    height: 5rem;
+    color: black;
+    text-decoration: none;
+    transition: var(--transition-speed);
+}
+
+.nav-link:hover {
+    background: var(--bg-secondary);
+    color:#2196F3;
+    transition: 0.2s;
+}
+
+.nav-link svg {
+    width: 2rem;
+    min-width: 2rem;
+    margin: 0 1.5rem;
+}
+
+#salir-button{
+    margin-left: auto;
+}
+
+
+.agendas{
+    grid-area:agendas;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    
+}
+
+.agendas li{
+    padding-top: 2em;
+    padding-bottom: 2em;
+    text-align: center;
+    text-decoration: none;
+    a{
+        text-decoration: none;
+    }
+}
+
+
+/*BOTONES FLOTANTES-------------------------------------------------------------------------------------------------------*/
+
+.floating-button-placeholder{
+    position:fixed;
+    top:17px;
+    left:365px;
+}
+
+.floating-button{
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:100%;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    text-decoration: none;
+    width:60px;
+    height:60px;
+    background:#EDCB2B;
+}
+
+.floating-button:hover{
+    background:#F7F7F7;
+}
+
+.floating-button i{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.5rem;
+    height:100%;
+    width: 100%;
+    color:#F7F7F7;
+}
+
+.floating-button i:hover{
+    color: black;
+}
+
+/*CUERPO-----------------------------------------------------------------------------------------------------------------*/
+
+.contedio{
+    grid-area:contenido;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+}
+
+.lista-citas{
+    margin-top: 6.5em;
+    list-style: none;
+    padding: 0;
+}
+
+.cita {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 70rem;
+    border: solid;
+    border-color: #F7F7F7;
+    justify-self: center;   
+    background-color: #F7F7F7;
+    height: fit-content;
+}
+
+.cita:hover {
+    box-shadow: 0 32px 64px 0 rgba(0,0,0,0.2);
+}
+
+.datos-cita{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    align-self: center;
+    align-items: left;
+    margin: 1em;
+}
+
+.dato-cultivo{
+    margin-right: 1rem;
+}
+
+.nombre{
+    border:solid;
+    background-color: tomato;
+    padding: 15px;
+    border-radius: 7px;
+}
+
+.especie{
+    border:solid;
+    background-color: rgb(255,170,88);
+    padding: 15px;
+    border-radius: 7px;
+}
+
+.genero{
+    border:solid;
+    background-color: rgb(255,202,149);
+    padding: 15px;
+    border-radius: 7px;
+}
+
+.familia{
+    border:solid;
+    background-color: rgb(255,223,45);
+    padding: 15px;
+    border-radius: 7px;
+}
+
+.orden{
+    border:solid;
+    background-color: rgb(176,255,88);
+    padding: 15px;
+    border-radius: 7px;
+}
+
+.clase{
+    border:solid;
+    background-color: rgb(93,255,88);
+    padding: 15px;
+    border-radius: 7px;
+}
+
+.division{
+    border:solid;
+    background-color: rgb(88,255,247);
+    padding: 13px;
+    border-radius: 7px;
+}
+
+#button-eliminar{
+    font-family: 'Montserrat';
+    font-weight: bolder;
+    border: solid;
+    border-color: #b2dd77;
+    border-radius: 7px;
+    padding: 10px;
+    background-color: #b2dd77;
+    width: 5rem;
+    margin: 1rem;
+}
+
+#button-eliminar:hover{
+    background-color: #77dd77;
+    border-color: #77dd77;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    transition: 0.5s;
+}
+
+#button-detalle{
+    font-family: 'Montserrat';
+    font-weight: bolder;
+    border: solid;
+    border-color: #b2dd77;
+    border-radius: 7px;
+    padding: 10px;
+    background-color: #b2dd77;
+    width: 5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+#button-detalle:hover{
+    background-color: #77dd77;
+    border-color: #77dd77;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    transition: 0.5s;
+}
+
+#overlay{
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+
+#mensaje-eliminar-cultivo{
+    border: solid;
+    border-color: #F7F7F7;
+    background-color: #F7F7F7;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#mensaje-eliminar-cultivo button{
+    font-family: 'Montserrat';
+    font-weight: bolder;
+    border: solid;
+    border-color: #b2dd77;
+    border-radius: 7px;
+    padding: 10px;
+    background-color: #b2dd77;
+    margin: 0.5rem;
+}
+
+#mensaje-eliminar-cultivo button:hover{
+    background-color: #77dd77;
+    border-color: #77dd77;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    transition: 0.5s;
+}
+
+
+
+
+
+
