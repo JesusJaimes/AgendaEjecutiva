@@ -1,3 +1,10 @@
+<%-- 
+    Document   : login
+    Created on : May 23, 2020, 8:16:47 AM
+    Author     : Romario
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -34,5 +41,3 @@ and open the template in the editor.
         </div>
     </body>
 </html>
-
-

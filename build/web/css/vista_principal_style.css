@@ -31,10 +31,6 @@ body {
     grid-area:navbar;
 }
 
-#logo{
-    width: 4.7rem;
-}
-
 .navbar-nav {
     grid-area:navbar-nav;
     list-style: none;
@@ -45,6 +41,8 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    border-bottom: solid;
+    border-bottom-color: grey;
     height: 100%;
 }
 
@@ -87,9 +85,6 @@ body {
     padding-bottom: 2em;
     text-align: center;
     text-decoration: none;
-    a{
-        text-decoration: none;
-    }
 }
 
 
@@ -99,13 +94,14 @@ body {
     position:fixed;
     top:17px;
     left:365px;
+    display:flex;
 }
 
 .floating-button{
     cursor:pointer;
     display:flex;
     align-items:center;
-    justify-content:center;
+    justify-content:flex-center;
     border-radius:100%;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
@@ -131,6 +127,26 @@ body {
 
 .floating-button i:hover{
     color: black;
+}
+
+#floating-lable{
+    opacity:0;
+    padding:2px 5px;
+    align-self:center;
+    justify-self:center;
+    user-select:none;
+    white-space:nowrap;
+    border-radius:3px;
+    font-size:16px;
+    background:#666;
+    color:#fff;
+    box-shadow:0 6px 20px rgba(0,0,0,.2);
+    margin-left:0.2rem;
+}
+
+#button-plus:hover+#floating-lable/*, #floating-lable:hover*/{
+    opacity:1;
+    transform:scale(1);
 }
 
 /*CUERPO-----------------------------------------------------------------------------------------------------------------*/
@@ -173,59 +189,6 @@ body {
     align-self: center;
     align-items: left;
     margin: 1em;
-}
-
-.dato-cultivo{
-    margin-right: 1rem;
-}
-
-.nombre{
-    border:solid;
-    background-color: tomato;
-    padding: 15px;
-    border-radius: 7px;
-}
-
-.especie{
-    border:solid;
-    background-color: rgb(255,170,88);
-    padding: 15px;
-    border-radius: 7px;
-}
-
-.genero{
-    border:solid;
-    background-color: rgb(255,202,149);
-    padding: 15px;
-    border-radius: 7px;
-}
-
-.familia{
-    border:solid;
-    background-color: rgb(255,223,45);
-    padding: 15px;
-    border-radius: 7px;
-}
-
-.orden{
-    border:solid;
-    background-color: rgb(176,255,88);
-    padding: 15px;
-    border-radius: 7px;
-}
-
-.clase{
-    border:solid;
-    background-color: rgb(93,255,88);
-    padding: 15px;
-    border-radius: 7px;
-}
-
-.division{
-    border:solid;
-    background-color: rgb(88,255,247);
-    padding: 13px;
-    border-radius: 7px;
 }
 
 #button-eliminar{

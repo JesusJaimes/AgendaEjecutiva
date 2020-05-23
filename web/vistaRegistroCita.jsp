@@ -69,6 +69,7 @@
                 <a href="vistaPrincipal.jsp" id="button-back" class="floating-button">
                     <i class="fas fa-arrow-left"></i>
                 </a>
+                <span id="floating-lable">Volver</span>
             </div>
             
             <div class="card">

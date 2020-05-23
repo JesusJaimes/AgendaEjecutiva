@@ -1,0 +1,59 @@
+
+body, html {
+    margin: 0;
+    height: 100%;
+    font-family: 'Montserrat';
+    font-size: 1rem;
+}
+
+body {
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "registro";
+    background-color: #2196F3;
+}
+
+.contenido {
+    text-align: center;
+    border: solid;
+    border-color: #F7F7F7;
+    grid-area: registro;
+    align-self: center;
+    justify-self: center;  
+    background-color: #F7F7F7;
+    box-shadow: 3px 10px 10px 5px rgba(0,0,0,0.2);
+    padding-bottom: 1em;
+    width: 23rem;
+}
+
+#form-registro-usuario input{
+    font-family: 'Montserrat';
+    font-weight: bolder;
+    border: solid;
+    border-width: 1px;
+    border-color: rgba(0,0,0,0.3);
+    padding: 15px;
+    width: 77%;
+    
+}
+
+#button-regitrar{
+    font-family: 'Montserrat';
+    font-weight: bolder;
+    border: solid;
+    color: white;
+    background-color:  #2196F3;
+    border-color:  #2196F3;
+    padding: 10px;
+    width: 80%
+}
+
+#button-regitrar:hover{
+    color: white;
+    background-color: #1fbbff;
+    border-color: #1fbbff;
+    transition: 0.5s;
+}
+

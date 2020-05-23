@@ -46,18 +46,6 @@
                 <li>
                     <a href="#"><span><i style="size: 5px"class="fas fa-book"></i>Agenda 1</span></a>
                 </li>
-                
-                <li>
-                    <a href="#"><span>Agenda 1</span></a>
-                </li>
-                
-                <li>
-                    <a href="#"><span>Agenda 1</span></a>
-                </li>
-                
-                <li>
-                    <a href="#"><span>Agenda 1</span></a>
-                </li>
             </ul>
             
         </nav>
@@ -66,10 +54,14 @@
         <div class="contedio" >
             
             <div class="floating-button-placeholder">
-                <a href="vistaRegistroCita.jsp" id="button-back" class="floating-button">
+                
+                <a href="vistaRegistroCita.jsp" id="button-plus" class="floating-button">
                     <i class="fas fa-plus"></i>
                 </a>
+                <span id="floating-lable">Crear Cita</span>
             </div>
+            
+            
             
             <ul class="lista-citas">
                 <li class="cita">
