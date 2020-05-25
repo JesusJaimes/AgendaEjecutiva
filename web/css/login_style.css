@@ -12,7 +12,11 @@ body {
     grid-template-rows: auto;
     grid-template-areas:
         "login";
-    background-color: #2196F3;
+    /*background-color: #e2061a;*/
+/*    background-image: url("../images/WhatsApp Image 2020-05-23 at 3.53.35 PM.jpeg");*/
+    background-image: url("../images/fondoInvertido.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
 }
 
 
@@ -36,7 +40,16 @@ body {
     background-color: white;
     box-shadow: 3px 10px 10px 5px rgba(0,0,0,0.2);
     /*height: 77%;*/
-    width: 20rem;
+    width: 25rem;
+/*    background-image: url("../images/441968-PEKT90-995.jpg");*/
+}
+
+.contenido:hover {
+    box-shadow: 0 32px 64px 0 rgba(0,0,0,0.2);
+}
+
+#logoUFPS{
+    width: 5rem;
 }
 
 #form-iniciar-sesion input{
@@ -56,10 +69,12 @@ body {
     font-weight: bolder;
     color: white;
     border: solid;
-    border-color: #2196F3;
+    /*border-color: #2196F3;*/
     padding: 10px;
-    background-color: #2196F3;
+    /*background-color: #2196F3;*/
     width: 80%;
+    border-color: #e2061a;
+    background-color: #e2061a;
 }
 
 #button-ir-recuperar-contraseña{
@@ -67,21 +82,27 @@ body {
     font-weight: bolder;
     color: white;
     border: solid;
-    border-color: #2196F3;
+    /*border-color: #2196F3;*/
+    /*background-color: #2196F3;*/
+    border-color: #e2061a;
+    background-color: #e2061a;
     padding: 10px;
-    background-color: #2196F3;
     width: 80%;
 }
 
 #button-login:hover{
-    background-color: #1fbbff;
-    border-color: #1fbbff;
+/*    background-color: #1fbbff;
+    border-color: #1fbbff;*/
+    background-color:black;
+    border-color: black;
     transition: 0.5s;
 }
 
 #button-ir-recuperar-contraseña:hover{
-    background-color: #1fbbff;
-    border-color: #1fbbff;
+/*    background-color: #ff5544;
+    border-color: #ff5544;*/
+    background-color:black;
+    border-color: black;
     transition: 0.5s;
 }
 

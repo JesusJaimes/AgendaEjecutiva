@@ -4,9 +4,73 @@
         <servlet-name>LeerFormularioLogin</servlet-name>
         <servlet-class>Control.LeerFormularioLogin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LeerFormularioRegistroUsuario</servlet-name>
+        <servlet-class>Control.LeerFormularioRegistroUsuario</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IrAgendaSeleccionada</servlet-name>
+        <servlet-class>Control.IrAgendaSeleccionada</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LeerFormularioCrearCita</servlet-name>
+        <servlet-class>Control.LeerFormularioCrearCita</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IrDetalleAgenda</servlet-name>
+        <servlet-class>Control.IrDetalleAgenda</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IrDetalleCita</servlet-name>
+        <servlet-class>Control.IrDetalleCita</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EliminarCita</servlet-name>
+        <servlet-class>Control.EliminarCita</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IrEditarCita</servlet-name>
+        <servlet-class>Control.IrEditarCita</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditarCita</servlet-name>
+        <servlet-class>Control.EditarCita</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LeerFormularioLogin</servlet-name>
         <url-pattern>/leer_formulario_login.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeerFormularioRegistroUsuario</servlet-name>
+        <url-pattern>/leer_formulario_registro_usuario.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IrAgendaSeleccionada</servlet-name>
+        <url-pattern>/ir_agenda_seleccionada.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeerFormularioCrearCita</servlet-name>
+        <url-pattern>/leer_formulario_crear_cita.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IrDetalleAgenda</servlet-name>
+        <url-pattern>/ir_detalle_agenda.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IrDetalleCita</servlet-name>
+        <url-pattern>/ir_detalle_cita.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminarCita</servlet-name>
+        <url-pattern>/eliminar_cita.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IrEditarCita</servlet-name>
+        <url-pattern>/ir_editar_cita.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditarCita</servlet-name>
+        <url-pattern>/editar_cita.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

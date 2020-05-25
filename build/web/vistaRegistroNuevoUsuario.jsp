@@ -12,15 +12,15 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <script type="text/JavaScript" src="js/funcionalidad.js"></script>
+        <script type="text/JavaScript" src="js/funcionesJS.js"></script>
         <link href="css/estilo_registro.css" rel="stylesheet" type="text/css">
         <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     </head>
     <body>
         <div class="contenido">
-            <form action="leer_formulario_registro.do" method="POST" id="form-registro-usuario">
+            <form action="leer_formulario_registro_usuario.do" method="POST" id="form-registro-usuario">
                 <h3>Formulario de registro</h3>
-                <input type="text" placeholder="Nombre" name="nombre" required/>
+                <input type="text" placeholder="Nombre Completo" name="nombre" required/>
                 <br>
                 <br>
                 <input type="email" placeholder="Email" name="email" required/>
@@ -35,7 +35,7 @@
                 <button type="submit" id="button-regitrar">Registrarme</button>
             </form>
             <br>
-            <a href="index.html" id="link-ir-login"><button id="button-regitrar">Volver al Login</button></a>
+            <a href="index.html" id="link-ir-login"><button id="button-volver">Volver al Login</button></a>
         </div>
         
     </body>

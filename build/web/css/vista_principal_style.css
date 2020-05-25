@@ -10,7 +10,10 @@ body {
     grid-template-columns:20em auto;
     grid-template-areas:
         "navbar contenido";
-    background-color: #2196F3;
+    background-color: #e5e5e5;
+    background-image: url("../images/fondo01.jpg");
+    background-repeat: repeat-y;
+    background-size:100%;
 }
 
 /*BARRA DE NAVEGACION-------------------------------------------------------------------------------------------------------*/
@@ -24,11 +27,7 @@ body {
         "agendas";
     top: 0;
     /*height: 5rem;*/
-    background-color: #F7F7F7;
-}
-
-.agendas{
-    grid-area:navbar;
+    background-color: white;
 }
 
 .navbar-nav {
@@ -47,44 +46,109 @@ body {
 }
 
 .nav-link {
-    display: flex;
-    align-items: center;
-    height: 5rem;
     color: black;
     text-decoration: none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:3rem;
+    height:100%;
+    width: 100%;
     transition: var(--transition-speed);
 }
 
 .nav-link:hover {
     background: var(--bg-secondary);
-    color:#2196F3;
+    color:#e2061a;
     transition: 0.2s;
-}
-
-.nav-link svg {
-    width: 2rem;
-    min-width: 2rem;
-    margin: 0 1.5rem;
 }
 
 #salir-button{
     margin-left: auto;
 }
 
-
 .agendas{
+    grid-area:navbar;
     grid-area:agendas;
     list-style: none;
-    margin: 0;
+    margin-top: 0.5rem;
     padding: 0;
-    
 }
 
-.agendas li{
-    padding-top: 2em;
-    padding-bottom: 2em;
-    text-align: center;
+.seleccionada{
+    padding: 0;
+    width: auto;
+    height: 5rem;
+   
+}
+
+.seleccionada form{
+    width: 100%;
+    height: 100%;
+}
+
+.seleccionada form button{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    border: black;
+    outline: none;
+}
+
+.seleccionada form button i{
+    font-size:2rem;
+    margin-right: 0.5rem;
+}
+
+.seleccionada form button p{
+    margin-left: 0.5rem;
+}
+
+.agenda{
+    padding: 0;
+    width: auto;
+    height: 5rem;
+}
+
+.agenda form{
+    width: 100%;
+    height: 100%;
+}
+
+.agenda form button{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: white;
+    background-color: white;
+    outline: none;
+}
+
+.agenda form button:hover{
+    background-color: #323232;
+    color: white;
+}
+
+.agenda form button i{
+    font-size:2rem;
+    margin-right: 0.5rem;
+}
+
+.agenda form button p{
+    margin-left: 0.5rem;
 }
 
 
@@ -93,7 +157,7 @@ body {
 .floating-button-placeholder{
     position:fixed;
     top:17px;
-    left:365px;
+    left:345px;
     display:flex;
 }
 
@@ -108,11 +172,12 @@ body {
     text-decoration: none;
     width:60px;
     height:60px;
-    background:#EDCB2B;
+    background:#e2061a;
 }
 
 .floating-button:hover{
-    background:#F7F7F7;
+    background:black;
+    box-shadow: 0 32px 64px 0 rgba(0,0,0,0.2);
 }
 
 .floating-button i{
@@ -122,11 +187,11 @@ body {
     font-size:1.5rem;
     height:100%;
     width: 100%;
-    color:#F7F7F7;
+    color:white;
 }
 
 .floating-button i:hover{
-    color: black;
+    color: white;
 }
 
 #floating-lable{
@@ -138,8 +203,8 @@ body {
     white-space:nowrap;
     border-radius:3px;
     font-size:16px;
-    background:#666;
-    color:#fff;
+    background:black;
+    color:white;
     box-shadow:0 6px 20px rgba(0,0,0,.2);
     margin-left:0.2rem;
 }
@@ -160,9 +225,13 @@ body {
 }
 
 .lista-citas{
-    margin-top: 6.5em;
+    width: -webkit-fill-available;
+    margin: 6rem;
     list-style: none;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .cita {
@@ -170,11 +239,11 @@ body {
     margin-bottom: 1rem;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
-    width: 70rem;
+    width: 30rem;
     border: solid;
-    border-color: #F7F7F7;
+    border-color: white;
     justify-self: center;   
-    background-color: #F7F7F7;
+    background-color: white;
     height: fit-content;
 }
 
@@ -187,95 +256,43 @@ body {
     flex-direction: column;
     list-style: none;
     align-self: center;
-    align-items: left;
     margin: 1em;
 }
 
-#button-eliminar{
-    font-family: 'Montserrat';
-    font-weight: bolder;
-    border: solid;
-    border-color: #b2dd77;
-    border-radius: 7px;
-    padding: 10px;
-    background-color: #b2dd77;
-    width: 5rem;
-    margin: 1rem;
+.datos-cita span {
+    display: flex;
+    align-items:center;
+    margin-bottom: 0.6rem;
 }
 
-#button-eliminar:hover{
-    background-color: #77dd77;
-    border-color: #77dd77;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    transition: 0.5s;
+.contbtncita{
+    margin-left: auto;
 }
 
-#button-detalle{
-    font-family: 'Montserrat';
-    font-weight: bolder;
-    border: solid;
-    border-color: #b2dd77;
-    border-radius: 7px;
-    padding: 10px;
-    background-color: #b2dd77;
-    width: 5rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    margin-bottom: 1rem;
-}
-
-#button-detalle:hover{
-    background-color: #77dd77;
-    border-color: #77dd77;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    transition: 0.5s;
-}
-
-#overlay{
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 2;
+.btncita {
+    background-color: white;
+    color: black;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    border: none;
     cursor: pointer;
+    outline: none;
+    
 }
 
-
-#mensaje-eliminar-cultivo{
-    border: solid;
-    border-color: #F7F7F7;
-    background-color: #F7F7F7;
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
+.btncita:hover, .btncita:focus {
+    background-color: black;
+    color:  white;
+    transition: 0.2s;
+}
+.separator{
+    border-bottom: solid;
+    border-bottom-color: grey;
+    margin: 0;
 }
 
-#mensaje-eliminar-cultivo button{
-    font-family: 'Montserrat';
-    font-weight: bolder;
-    border: solid;
-    border-color: #b2dd77;
-    border-radius: 7px;
-    padding: 10px;
-    background-color: #b2dd77;
-    margin: 0.5rem;
-}
-
-#mensaje-eliminar-cultivo button:hover{
-    background-color: #77dd77;
-    border-color: #77dd77;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    transition: 0.5s;
-}
 
 
 

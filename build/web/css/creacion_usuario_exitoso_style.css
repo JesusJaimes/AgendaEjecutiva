@@ -1,0 +1,59 @@
+
+body, html {
+     margin: 0;
+    height: 100%;
+    font-family: 'Montserrat';
+    font-size: 1rem;
+}
+
+body {
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "registro";
+    background-image: url("../images/fondoInvertido.jpg");
+    background-repeat: no-repeat;
+    background-size:100%;;
+}
+
+#logo{
+    height: 9rem;
+}
+
+.contenido {
+    text-align: center;
+    border: solid;
+    border-color: white;
+    grid-area: registro;
+    justify-self: center;   
+    align-self: center;
+    background-color: white;
+    box-shadow: 3px 10px 10px 5px rgba(0,0,0,0.2);
+    padding: 1rem;
+    /*height: 19rem;*/
+    width: 20rem;
+}
+
+.contenido i{
+    font-size: 9rem;
+    margin-bottom: 2rem;
+}
+
+#button-volver{
+    font-family: 'Montserrat';
+    font-weight: bolder;
+    border: solid;
+    color: white;
+    border-color: #e2061a;
+    background-color: #e2061a;
+    padding: 10px;
+    width: 80%
+}
+
+#button-volver:hover{
+    color: white;
+    background-color: black;
+    border-color: black;
+    transition: 0.5s;
+}

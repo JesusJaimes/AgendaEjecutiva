@@ -12,20 +12,23 @@ body {
     grid-template-rows: auto;
     grid-template-areas:
         "registro";
-    background-color: #2196F3;
+    /*background-color: #2196F3;*/
+    background-image: url("../images/fondoInvertido.jpg");
+    background-repeat: no-repeat;
+    background-size:100%;
 }
 
 .contenido {
     text-align: center;
     border: solid;
-    border-color: #F7F7F7;
     grid-area: registro;
     align-self: center;
     justify-self: center;  
-    background-color: #F7F7F7;
     box-shadow: 3px 10px 10px 5px rgba(0,0,0,0.2);
     padding-bottom: 1em;
-    width: 23rem;
+    width: 25rem;
+    border-color: white;
+    background-color: white;
 }
 
 #form-registro-usuario input{
@@ -44,16 +47,35 @@ body {
     font-weight: bolder;
     border: solid;
     color: white;
-    background-color:  #2196F3;
-    border-color:  #2196F3;
+    border-color: #e2061a;
+    background-color: #e2061a;
     padding: 10px;
     width: 80%
 }
 
 #button-regitrar:hover{
     color: white;
-    background-color: #1fbbff;
-    border-color: #1fbbff;
+    background-color: black;
+    border-color: black;
     transition: 0.5s;
 }
 
+#button-volver{
+    font-family: 'Montserrat';
+    font-weight: bolder;
+    border: solid;
+    color: white;
+    border-color: #e2061a;
+    background-color: #e2061a;
+    padding: 10px;
+    width: 80%;
+    
+        
+}
+
+#button-volver:hover{
+    color: white;
+    background-color: black;
+    border-color: black;
+    transition: 0.5s;
+}

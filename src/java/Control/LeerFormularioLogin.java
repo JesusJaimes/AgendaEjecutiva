@@ -5,8 +5,17 @@
  */
 package Control;
 
+import Model.Agenda;
+import Model.Cita;
+import Model.Usuario;
+import Negocio.AgendaEjecutiva;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,12 +38,25 @@ public class LeerFormularioLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        
         String user = request.getParameter("user");
         String password = request.getParameter("password");
-        response.sendRedirect("vistaPrincipal.jsp");
+        Usuario usuario = AgendaEjecutiva.getUsuario(user);
+        Agenda agenda = usuario.getAgendaList().get(0);
+        
+        if(usuario!=null && AgendaEjecutiva.validarUsuario(user, password)){
+            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("agenda", agenda.getAgendaPK().getNombre());
+            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda.getAgendaPK().getNombre()));
+            request.getSession().setAttribute("citas", agenda.citasToHtmlFormat());
+            response.sendRedirect("vistaPrincipal.jsp");
+        }else{
+            response.sendRedirect("index.html");
+        }
                
     }
+    
+  
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
