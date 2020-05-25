@@ -145,9 +145,9 @@ public class Agenda implements Serializable {
     
     public String citasToHtmlFormat(){
         List<Cita> citasList = getCitaList();
-        AgendaEjecutiva.odernarCitas(citasList, 0, ((citasList.size())-1));
         String citas = "";
         if(citasList!=null && !citasList.isEmpty()){
+            AgendaEjecutiva.odernarCitas(citasList, 0, ((citasList.size())-1));
             for(Cita c: citasList){
                 SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
                 String date = DATE_FORMAT.format(c.getFecha());

@@ -7,12 +7,11 @@
     <class>Model.Cita</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-34-234-228-127.compute-1.amazonaws.com:5432/d45m9p24rric91"/>
-      <property name="javax.persistence.jdbc.user" value="kxzwcvssvxhjzq"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-165-36-134.compute-1.amazonaws.com:5432/d3chbngshkvbk2"/>
+      <property name="javax.persistence.jdbc.user" value="hogviiutxomqdf"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="b2c9113a69cdb3c8454956eefe7e1ab430c66818ec3b0068543745cd5be8c6bf"/>
+      <property name="javax.persistence.jdbc.password" value="e9392088be25d1cbfecdbff3a1f20f8dde79eeefac7e2e7a88865bf65ba6974f"/>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
-      <property name="sslmode" value="require"/>
     </properties>
   </persistence-unit>
 </persistence>
