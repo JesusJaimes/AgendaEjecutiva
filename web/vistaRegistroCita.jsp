@@ -83,7 +83,7 @@
                 
                 <input type='text' name='asunto-cita' placeholder='Asunto' required/>
                 <input type='date' name='fecha-cita' placeholder='Fecha de Fertilizante' min=<%=minDate%> required/>
-                <input type='time' name='hora-cita' placeholder='Hora' min=<%=minHour%> required/>
+                <input type='time' name='hora-cita' placeholder='Hora' required/>
                 <textarea name='anotacion' rows='4' cols='50' placeholder='Informacion adicional'></textarea>
                 <button type='submit' id="button-registrar">Crear</button>
                 </form>

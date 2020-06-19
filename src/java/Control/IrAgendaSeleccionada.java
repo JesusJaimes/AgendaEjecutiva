@@ -44,11 +44,12 @@ public class IrAgendaSeleccionada extends HttpServlet {
         String user = (String)request.getSession().getAttribute("user");
         String agenda = request.getParameter("agenda");
         Usuario usuario = AgendaEjecutiva.getUsuario(user);
-        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
+//        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
         request.getSession().setAttribute("user", user);
         request.getSession().setAttribute("agenda", agenda);
         request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda));
-        request.getSession().setAttribute("citas", agendaObj.citasToHtmlFormat());
+//        request.getSession().setAttribute("citas", agendaObj.listaCitasToHtmlFormat());
+        request.getRequestDispatcher("vistaPrincipal.jsp");
         response.sendRedirect("vistaPrincipal.jsp");
     }
     

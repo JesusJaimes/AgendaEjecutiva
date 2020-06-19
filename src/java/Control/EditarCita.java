@@ -53,11 +53,11 @@ public class EditarCita extends HttpServlet {
         cita.setDescripcion(anotacion);
         
         if(AgendaEjecutiva.actualizarCita(cita, cita.getCitaPK())){
-            Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
+//            Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
             request.getSession().setAttribute("user", user);
             request.getSession().setAttribute("agenda", agenda);
             request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda));
-            request.getSession().setAttribute("citas", agendaObj.citasToHtmlFormat());
+//            request.getSession().setAttribute("citas", agendaObj.listaCitasToHtmlFormat());
             response.sendRedirect("vistaPrincipal.jsp");
         }
     }

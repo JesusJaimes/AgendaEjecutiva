@@ -48,7 +48,9 @@ public class LeerFormularioLogin extends HttpServlet {
             request.getSession().setAttribute("user", user);
             request.getSession().setAttribute("agenda", agenda.getAgendaPK().getNombre());
             request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda.getAgendaPK().getNombre()));
-            request.getSession().setAttribute("citas", agenda.citasToHtmlFormat());
+//            request.getSession().setAttribute("citas", agenda.listaCitasToHtmlFormat());
+            
+            request.getRequestDispatcher("vistaPrincipal.jsp");
             response.sendRedirect("vistaPrincipal.jsp");
         }else{
             response.sendRedirect("index.html");

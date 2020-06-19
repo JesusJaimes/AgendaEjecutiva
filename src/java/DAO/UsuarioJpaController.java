@@ -91,7 +91,7 @@ public class UsuarioJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Agenda " + agendaListOldAgenda + " since its usuario1 field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Agenda " + agendaListOldAgenda + " since its usuario field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -151,7 +151,7 @@ public class UsuarioJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Agenda " + agendaListOrphanCheckAgenda + " in its agendaList field has a non-nullable usuario1 field.");
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Agenda " + agendaListOrphanCheckAgenda + " in its agendaList field has a non-nullable usuario field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

@@ -80,7 +80,7 @@ public class AgendaEjecutiva {
         return agenda.getCitaList();
     }
     
-    public static Agenda getAgenda(String usuario, String agenda){
+    public Agenda getAgenda(String usuario, String agenda){
         return agendaDAO.findAgenda(new AgendaPK(agenda, usuario));
     }
     

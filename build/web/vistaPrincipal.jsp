@@ -20,12 +20,17 @@
 <%
     String user = (String)request.getSession().getAttribute("user");
     String agenda = (String)request.getSession().getAttribute("agenda");
-    String citas = (String)request.getSession().getAttribute("citas");
+    //String citas = (String)request.getSession().getAttribute("citas");
+     
     String agendas = (String)request.getSession().getAttribute("agendas");
+    Agenda agendaObj = (new AgendaEjecutiva()).getAgenda(user, agenda);
+    String citas = agendaObj.listaCitasToHtmlFormat();
+    System.out.println("-------------------------"+agenda);
+    System.out.println("-------------------------"+agendaObj.getCitaList().size());
     request.getSession().setAttribute("user", user);
     request.getSession().setAttribute("agenda", agenda);
     request.getSession().setAttribute("agendas", agendas);
-    request.getSession().setAttribute("citas", citas);
+    //request.getSession().setAttribute("citas", citas);
     
 %>
 
@@ -83,7 +88,7 @@
             </div>
             
             <ul class="lista-citas">
-                <%=citas%>
+                <%out.print(citas);%>
             </ul>
             
         </div>

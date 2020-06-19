@@ -59,21 +59,21 @@ public class CitaJpaController implements Serializable {
             System.out.println("inicio try");
             em = getEntityManager();
             em.getTransaction().begin();
-            Agenda agenda1 = cita.getAgenda1();
+            Agenda agenda = cita.getAgenda1();
             System.out.println("-------------------1");
-            if (agenda1 != null) {
+            if (agenda != null) {
                 System.out.println("-------------------2");
-                agenda1 = em.getReference(agenda1.getClass(), agenda1.getAgendaPK());
-                cita.setAgenda1(agenda1);
+                agenda = em.getReference(agenda.getClass(), agenda.getAgendaPK());
+                cita.setAgenda1(agenda);
             }
             System.out.println("-------------------3");
             System.out.println(cita.getCitaPK().getId());
             System.out.println("-------------------4");
             em.persist(cita);
             System.out.println("-------------------5");
-            if (agenda1 != null) {
-                agenda1.getCitaList().add(cita);
-                agenda1 = em.merge(agenda1);
+            if (agenda != null) {
+                agenda.getCitaList().add(cita);
+                agenda = em.merge(agenda);
             }
             System.out.println("-------------------7");
             em.getTransaction().commit();
@@ -100,20 +100,20 @@ public class CitaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Cita persistentCita = em.find(Cita.class, cita.getCitaPK());
-            Agenda agenda1Old = persistentCita.getAgenda1();
-            Agenda agenda1New = cita.getAgenda1();
-            if (agenda1New != null) {
-                agenda1New = em.getReference(agenda1New.getClass(), agenda1New.getAgendaPK());
-                cita.setAgenda1(agenda1New);
+            Agenda agendaOld = persistentCita.getAgenda1();
+            Agenda agendaNew = cita.getAgenda1();
+            if (agendaNew != null) {
+                agendaNew = em.getReference(agendaNew.getClass(), agendaNew.getAgendaPK());
+                cita.setAgenda1(agendaNew);
             }
             cita = em.merge(cita);
-            if (agenda1Old != null && !agenda1Old.equals(agenda1New)) {
-                agenda1Old.getCitaList().remove(cita);
-                agenda1Old = em.merge(agenda1Old);
+            if (agendaOld != null && !agendaOld.equals(agendaNew)) {
+                agendaOld.getCitaList().remove(cita);
+                agendaOld = em.merge(agendaOld);
             }
-            if (agenda1New != null && !agenda1New.equals(agenda1Old)) {
-                agenda1New.getCitaList().add(cita);
-                agenda1New = em.merge(agenda1New);
+            if (agendaNew != null && !agendaNew.equals(agendaOld)) {
+                agendaNew.getCitaList().add(cita);
+                agendaNew = em.merge(agendaNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -144,10 +144,10 @@ public class CitaJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The cita with id " + id + " no longer exists.", enfe);
             }
-            Agenda agenda1 = cita.getAgenda1();
-            if (agenda1 != null) {
-                agenda1.getCitaList().remove(cita);
-                agenda1 = em.merge(agenda1);
+            Agenda agenda = cita.getAgenda1();
+            if (agenda != null) {
+                agenda.getCitaList().remove(cita);
+                agenda = em.merge(agenda);
             }
             em.remove(cita);
             em.getTransaction().commit();

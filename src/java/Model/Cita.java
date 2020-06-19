@@ -5,8 +5,15 @@
  */
 package Model;
 
+import Negocio.AgendaEjecutiva;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -58,7 +65,7 @@ public class Cita implements Serializable {
         @JoinColumn(name = "usuario", referencedColumnName = "usuario", insertable = false, updatable = false),
         @JoinColumn(name = "agenda", referencedColumnName = "nombre", insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Agenda agenda1;
+    private Agenda agenda;
 
     public Cita() {
     }
@@ -129,11 +136,11 @@ public class Cita implements Serializable {
     }
 
     public Agenda getAgenda1() {
-        return agenda1;
+        return agenda;
     }
 
-    public void setAgenda1(Agenda agenda1) {
-        this.agenda1 = agenda1;
+    public void setAgenda1(Agenda agenda) {
+        this.agenda = agenda;
     }
 
     @Override
@@ -159,6 +166,46 @@ public class Cita implements Serializable {
     @Override
     public String toString() {
         return "Model.Cita[ citaPK=" + citaPK + " ]";
+    }
+    
+    public String citaToCardHtmlFormat(){
+        
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+        String date = DATE_FORMAT.format(this.getFecha());
+        Instant instant = Instant.ofEpochMilli(this.getHora().getTime());
+        LocalTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
+        String horaStr = ""+res.getHour();
+        String minutoStr = ""+res.getMinute();
+
+        if(horaStr.length()==1){
+            horaStr = "0"+horaStr;
+        }
+
+        if(minutoStr.length()==1){
+            minutoStr = "0"+minutoStr;
+        }
+
+        String time = horaStr+":"+minutoStr;
+
+        String cita = "<li class='cita'>"
+        + "<div class='datos-cita'>"
+        + "<span><b>Fecha:</b> "+date+" <b>|</b> <b>Hora:</b> "+time
+        + "<span class='contbtncita'>"
+        + "<form action='ir_detalle_cita.do' method='POST'>"
+                + "<input type='text' name='idcita' style='display:none;' value='"+this.getCitaPK().getId()+"' required/>"
+                + "<button class='btncita'><i class=\"fas fa-info\"></i></button></form>"
+        + "<form action='eliminar_cita.do' method='POST'>"
+                + "<input type='text' name='idcita' style='display:none;' value='"+this.getCitaPK().getId()+"' required/>"
+                + "<button class='btncita'><i class=\"fas fa-trash-alt\"></i></button></form>"
+        + "</span>"
+        + "</span>"
+        + "<p class='separator'></p>"
+        + "<p style='word-wrap: break-word;'><b>"+this.getAsunto()+"</b></p>"
+        + "</div>"
+        + "</li>";
+            
+        
+        return cita;
     }
     
 }

@@ -54,8 +54,8 @@ public class Agenda implements Serializable {
     private Date fecha;
     @JoinColumn(name = "usuario", referencedColumnName = "email", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Usuario usuario1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "agenda1")
+    private Usuario usuario;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "agenda")
     private List<Cita> citaList;
 
     public Agenda() {
@@ -69,11 +69,11 @@ public class Agenda implements Serializable {
         this.agendaPK = new AgendaPK(nombre, usuario);
     }
 
-    public Agenda(AgendaPK agendaPK, String descripcion, Date fecha, Usuario usuario1) {
+    public Agenda(AgendaPK agendaPK, String descripcion, Date fecha, Usuario usuario) {
         this.agendaPK = agendaPK;
         this.descripcion = descripcion;
         this.fecha = fecha;
-        this.usuario1 = usuario1;
+        this.usuario = usuario;
         this.citaList = citaList;
     }
 
@@ -102,11 +102,11 @@ public class Agenda implements Serializable {
     }
 
     public Usuario getUsuario1() {
-        return usuario1;
+        return usuario;
     }
 
-    public void setUsuario1(Usuario usuario1) {
-        this.usuario1 = usuario1;
+    public void setUsuario1(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @XmlTransient
@@ -143,45 +143,13 @@ public class Agenda implements Serializable {
         return "Model.Agenda[ agendaPK=" + agendaPK + " ]";
     }
     
-    public String citasToHtmlFormat(){
-        List<Cita> citasList = getCitaList();
+    public String listaCitasToHtmlFormat(){
+        List<Cita> citasList = this.getCitaList();
         String citas = "";
         if(citasList!=null && !citasList.isEmpty()){
             AgendaEjecutiva.odernarCitas(citasList, 0, ((citasList.size())-1));
             for(Cita c: citasList){
-                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-                String date = DATE_FORMAT.format(c.getFecha());
-                Instant instant = Instant.ofEpochMilli(c.getHora().getTime());
-                LocalTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
-                String horaStr = ""+res.getHour();
-                String minutoStr = ""+res.getMinute();
-
-                if(horaStr.length()==1){
-                    horaStr = "0"+horaStr;
-                }
-
-                if(minutoStr.length()==1){
-                    minutoStr = "0"+minutoStr;
-                }
-
-                String time = horaStr+":"+minutoStr;
-
-                citas += "<li class='cita'>"
-                + "<div class='datos-cita'>"
-                + "<span><b>Fecha:</b> "+date+" <b>|</b> <b>Hora:</b> "+time
-                + "<span class='contbtncita'>"
-                + "<form action='ir_detalle_cita.do' method='POST'>"
-                        + "<input type='text' name='idcita' style='display:none;' value='"+c.getCitaPK().getId()+"' required/>"
-                        + "<button class='btncita'><i class=\"fas fa-info\"></i></button></form>"
-                + "<form action='eliminar_cita.do' method='POST'>"
-                        + "<input type='text' name='idcita' style='display:none;' value='"+c.getCitaPK().getId()+"' required/>"
-                        + "<button class='btncita'><i class=\"fas fa-trash-alt\"></i></button></form>"
-                + "</span>"
-                + "</span>"
-                + "<p class='separator'></p>"
-                + "<p><b>"+c.getAsunto()+"</b></p>"
-                + "</div>"
-                + "</li>";
+                citas += c.citaToCardHtmlFormat();
             }
         }
         return citas;

@@ -49,16 +49,19 @@ public class LeerFormularioCrearCita extends HttpServlet {
         String horaString = request.getParameter("hora-cita");
         String anotacion = request.getParameter("anotacion");
         
-        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
-        
+        Agenda agendaObj = (new AgendaEjecutiva()).getAgenda(user, agenda);
         Cita cita = crearCita(fechaString, horaString, asunto, anotacion, user, agendaObj);
+       
         
         if(AgendaEjecutiva.insertarCita(cita)){
             request.getSession().setAttribute("user", user);
             request.getSession().setAttribute("agenda", agenda);
             request.getSession().setAttribute("agendas", agendas);
-        request.getSession().setAttribute("citas", agendaObj.citasToHtmlFormat());
-            response.sendRedirect("vistaPrincipal.jsp");
+//            agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
+//            request.getSession().setAttribute("citas", agendaObj.listaCitasToHtmlFormat());
+            request.getRequestDispatcher("vistaPrincipal.jsp").forward(request, response);
+
+//            response.sendRedirect("vistaPrincipal.jsp");
         }
         
     }

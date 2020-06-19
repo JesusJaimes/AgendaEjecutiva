@@ -27,8 +27,13 @@ body {
     box-shadow: 3px 10px 10px 5px rgba(0,0,0,0.2);
     padding-bottom: 1em;
     width: 25rem;
+    transition: 0.5s;
     border-color: white;
     background-color: white;
+}
+
+.contenido:hover {
+    box-shadow: 0 32px 64px 0 rgba(0,0,0,0.2);
 }
 
 #form-registro-usuario input{
