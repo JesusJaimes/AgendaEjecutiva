@@ -80,10 +80,19 @@ public class AgendaEjecutiva {
         return agenda.getCitaList();
     }
     
-    public Agenda getAgenda(String usuario, String agenda){
+    public static Agenda getAgenda(String usuario, String agenda){
         return agendaDAO.findAgenda(new AgendaPK(agenda, usuario));
     }
     
+    public static void actualizarAgenda(Agenda agendaObj, String usuario, String agenda){
+        try{
+            Agenda agendaExistente = getAgenda(usuario, agenda);
+            agendaExistente.setCitaList(agendaObj.getCitaList());
+            agendaDAO.edit(agendaExistente);
+        }catch(Exception e){
+            System.out.println(e.getStackTrace().toString());
+        }
+    }
     
     public static boolean insertarCita(Cita cita){
          try{
@@ -101,7 +110,7 @@ public class AgendaEjecutiva {
     }
     
     public static Date localDateToDate(LocalDate localDate) {
-        return java.sql.Date.valueOf(localDate);
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
     
     public static Date localTimeToDate(LocalTime localTime){

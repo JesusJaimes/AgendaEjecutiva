@@ -144,7 +144,7 @@ public class Agenda implements Serializable {
     }
     
     public String listaCitasToHtmlFormat(){
-        List<Cita> citasList = this.getCitaList();
+        List<Cita> citasList = getCitaList();
         String citas = "";
         if(citasList!=null && !citasList.isEmpty()){
             AgendaEjecutiva.odernarCitas(citasList, 0, ((citasList.size())-1));

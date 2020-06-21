@@ -36,6 +36,10 @@
         <servlet-name>EditarCita</servlet-name>
         <servlet-class>Control.EditarCita</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Salir</servlet-name>
+        <servlet-class>Control.Salir</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LeerFormularioLogin</servlet-name>
         <url-pattern>/leer_formulario_login.do</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>EditarCita</servlet-name>
         <url-pattern>/editar_cita.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Salir</servlet-name>
+        <url-pattern>/salir.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
