@@ -38,10 +38,11 @@ public class LeerFormularioRegistroUsuario extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String nombre = request.getParameter("nombre");
+        String cargo = request.getParameter("cargo");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
         Date fechaRegistro = new Date(System.currentTimeMillis());
-        Usuario usuario = new Usuario(nombre, email, password, fechaRegistro);
+        Usuario usuario = new Usuario(nombre, email, password, cargo, fechaRegistro);
         AgendaPK agendaPK = new AgendaPK("Mi agenda", email);
         String descripcion = "Agenda generada automaticamente";
         Date fecha = new Date(System.currentTimeMillis());

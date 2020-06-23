@@ -40,6 +40,14 @@
         <servlet-name>Salir</servlet-name>
         <servlet-class>Control.Salir</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MarcarCita</servlet-name>
+        <servlet-class>Control.MarcarCita</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LeerFormularioGenerarReporte</servlet-name>
+        <servlet-class>Control.LeerFormularioGenerarReporte</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LeerFormularioLogin</servlet-name>
         <url-pattern>/leer_formulario_login.do</url-pattern>
@@ -79,6 +87,14 @@
     <servlet-mapping>
         <servlet-name>Salir</servlet-name>
         <url-pattern>/salir.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MarcarCita</servlet-name>
+        <url-pattern>/marcar_cita.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeerFormularioGenerarReporte</servlet-name>
+        <url-pattern>/leer_formulario_generar_reporte.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

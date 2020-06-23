@@ -23,6 +23,9 @@
                 <input type="text" placeholder="Nombre Completo" name="nombre" required/>
                 <br>
                 <br>
+                <input type="text" placeholder="Cargo" name="cargo" required/>
+                <br>
+                <br>
                 <input type="email" placeholder="Email" name="email" required/>
                 <br>
                 <br>

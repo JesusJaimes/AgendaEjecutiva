@@ -13,6 +13,7 @@ import Model.Agenda;
 import Model.AgendaPK;
 import Model.Cita;
 import Model.CitaPK;
+import Model.ReportEntry;
 import Model.Usuario;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -225,5 +227,129 @@ public class AgendaEjecutiva {
             return false;
         }
         return true;
+    }
+    
+    public static boolean actualizarEstadoCita(Cita cita, CitaPK citaId){
+        try{
+            Cita citaExistente = getCita(citaId);
+            citaExistente.setCompletada(true);
+            citaDAO.edit(citaExistente);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+    
+    public static String obtenerTablaHtmlReporte(List<Cita> citasAgenda, Date fechaDesde, Date fechaHasta){
+        String reporte = "<table>"
+                + "<tr>"
+                + "<th>Accion</th>"
+                + "<th>Fecha</th>"
+                + "<th>Asunto de cita</th>"
+                + "<th>Fecha de cita</th>"
+                + "<th>Hora de inicio</th>"
+                + "<th>Hora de finalizacion</th>"
+                + "</tr>";
+        
+        
+        ArrayList<ReportEntry> report = obtenerArrayListReporte(citasAgenda, fechaDesde, fechaHasta);
+        
+        for(ReportEntry re:report){
+            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+            String fecha = DATE_FORMAT.format(re.getFecha());
+            reporte+="<tr>"
+                + "<td>"+re.getAccion()+"</td>"
+                + "<td>"+fecha+"</td>"
+                + "<td>"+re.getAsuntoCita()+"</td>"
+                + "<td>"+re.getFechaCita()+"</td>"
+                + "<td>"+re.getHoraInicio()+"</td>"
+                + "<td>"+re.getHoraFinal()+"</td>"
+                + "</tr>";
+        }
+        reporte+="</table>";
+        
+        return reporte;
+    }
+    
+    public static ArrayList<ReportEntry> obtenerArrayListReporte(List<Cita> citasAgenda, Date fechaDesde, Date fechaHasta){
+        ArrayList<ReportEntry> report = new ArrayList<>();
+         
+        for(Cita c: citasAgenda){
+            if(fechaEnRango(c.getFechaCreacion(), fechaDesde, fechaHasta)){
+                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+                String fechaCita = DATE_FORMAT.format(c.getFecha());
+                report.add(new ReportEntry("Se creó", c.getFechaCreacion(), c.getAsunto(), fechaCita, formatDateToStringHour(c.getHora()), formatDateToStringHour(c.getHoraFinal())));
+            }
+            
+            if(fechaEnRango(c.getFecha(), fechaDesde, fechaHasta)){
+                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+                String fechaCita = DATE_FORMAT.format(c.getFecha());
+                report.add(new ReportEntry("Se realizó", c.getFecha(), c.getAsunto(), fechaCita, formatDateToStringHour(c.getHora()), formatDateToStringHour(c.getHoraFinal())));
+            }
+        }
+        
+        odernarListReporte(report, 0, ((report.size())-1));
+         
+        return report;
+    }
+    
+    
+    public static void odernarListReporte(ArrayList<ReportEntry> report, int start, int end){
+ 
+        int partition = partition2(report, start, end);
+ 
+        if(partition-1>start) {
+            odernarListReporte(report, start, partition - 1);
+        }
+        if(partition+1<end) {
+            odernarListReporte(report, partition + 1, end);
+        }
+    }
+ 
+    public static int partition2(ArrayList<ReportEntry> report, int start, int end){
+        ReportEntry pivot = report.get(end);
+ 
+        for(int i=start; i<end; i++){
+            LocalDate citaDate = dateToLocalDate(report.get(i).getFecha());
+            
+            LocalDate pivotDate = dateToLocalDate(pivot.getFecha());
+            
+            if(citaDate.isBefore(pivotDate)){
+                ReportEntry temp= report.get(start);
+                report.set(start, report.get(i));
+                report.set(i, temp);
+                start++;
+            }
+        }
+ 
+        ReportEntry temp = report.get(start);
+        report.set(start, pivot);
+        report.set(end, temp);
+ 
+        return start;
+    }
+    
+    
+    
+    public static boolean fechaEnRango(Date testDate, Date startDate, Date endDate){
+        return !(testDate.before(startDate) || testDate.after(endDate));
+    }
+    
+    public static String formatDateToStringHour(Date hora){
+        Instant instant = Instant.ofEpochMilli(hora.getTime());
+        LocalTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
+        String horaStr = ""+res.getHour();
+        String minutoStr = ""+res.getMinute();
+
+        if(horaStr.length()==1){
+            horaStr = "0"+horaStr;
+        }
+
+        if(minutoStr.length()==1){
+            minutoStr = "0"+minutoStr;
+        }
+
+        String time = horaStr+":"+minutoStr;
+        return time;
     }
 }

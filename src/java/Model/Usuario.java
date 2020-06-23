@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre"),
     @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email"),
     @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password"),
-    @NamedQuery(name = "Usuario.findByFecharegistro", query = "SELECT u FROM Usuario u WHERE u.fecharegistro = :fecharegistro")})
+    @NamedQuery(name = "Usuario.findByFecharegistro", query = "SELECT u FROM Usuario u WHERE u.fecharegistro = :fecharegistro"),
+    @NamedQuery(name = "Usuario.findByCargo", query = "SELECT u FROM Usuario u WHERE u.cargo = :cargo")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,7 +50,9 @@ public class Usuario implements Serializable {
     @Column(name = "fecharegistro")
     @Temporal(TemporalType.DATE)
     private Date fecharegistro;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
+    @Column(name = "cargo")
+    private String cargo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario1")
     private List<Agenda> agendaList;
 
     public Usuario() {
@@ -58,14 +61,14 @@ public class Usuario implements Serializable {
     public Usuario(String email) {
         this.email = email;
     }
-    
-    public Usuario(String nombre, String email, String password, Date fecharegistro) {
+
+    public Usuario(String nombre, String email, String password, String cargo, Date fechaRegistro) {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
-        this.fecharegistro = fecharegistro;
+        this.fecharegistro = fechaRegistro;
+        this.cargo = cargo;
     }
-
 
     public String getNombre() {
         return nombre;
@@ -97,6 +100,14 @@ public class Usuario implements Serializable {
 
     public void setFecharegistro(Date fecharegistro) {
         this.fecharegistro = fecharegistro;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
     }
 
     @XmlTransient
@@ -133,7 +144,6 @@ public class Usuario implements Serializable {
         return "Model.Usuario[ email=" + email + " ]";
     }
     
-    
     public String agendasToHtmlFormat(String agendaSelecionada){
         String agendas="";
         String classStyle = "class='seleccionada'";
@@ -158,4 +168,5 @@ public class Usuario implements Serializable {
         }
         return agendas;
     }
+    
 }

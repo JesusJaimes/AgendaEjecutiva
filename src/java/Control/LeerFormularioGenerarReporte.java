@@ -7,17 +7,12 @@ package Control;
 
 import Model.Agenda;
 import Model.Cita;
-import Model.CitaPK;
 import Negocio.AgendaEjecutiva;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
+import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romario
  */
-public class LeerFormularioCrearCita extends HttpServlet {
+public class LeerFormularioGenerarReporte extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,44 +39,23 @@ public class LeerFormularioCrearCita extends HttpServlet {
         String user = (String)request.getSession().getAttribute("user");
         String agenda = (String)request.getSession().getAttribute("agenda");
         String agendas = (String)request.getSession().getAttribute("agendas");
-        String asunto = request.getParameter("asunto-cita");
-        String fechaString = request.getParameter("fecha-cita");
-        String horaString = request.getParameter("hora-cita");
-        String horaFinalString = request.getParameter("hora-final");
-        String anotacion = request.getParameter("anotacion");
         
         Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
-        Cita cita = crearCita(fechaString, horaString, asunto, anotacion, user, agendaObj, horaFinalString);
         
-        if(AgendaEjecutiva.insertarCita(cita)){
-            agendaObj.getCitaList().add(cita);
-            AgendaEjecutiva.actualizarAgenda(agendaObj, user, agenda);
-            request.getSession().setAttribute("user", user);
-            request.getSession().setAttribute("agenda", agenda);
-            request.getSession().setAttribute("agendas", agendas);
-            response.sendRedirect("vistaPrincipal.jsp");
-        }
+        String fechaDesdeString = request.getParameter("fecha-desde");
+        String fechaHastaString = request.getParameter("fecha-hasta");
         
-    }
-    
-    public long crearIdCita(){
-        LocalDate idDate = LocalDate.now();
-        LocalTime idTime = LocalTime.now();
-        long id = Long.parseLong(idTime.getSecond()+""+idTime.getMinute()+""+idTime.getHour()
-                +""+idDate.getDayOfMonth()+""+idDate.getMonthValue()+""+idDate.getYear());
-        return id;
-    }
-    
-    public Cita crearCita(String fechaString, String horaString, String asunto, String anotacion, String user, Agenda agenda, String horaFinalString){
+        Date fechaDesde = AgendaEjecutiva.localDateToDate(LocalDate.parse(fechaDesdeString));
+        Date fechaHasta = AgendaEjecutiva.localDateToDate(LocalDate.parse(fechaHastaString));
         
-        Date fecha = AgendaEjecutiva.localDateToDate(LocalDate.parse(fechaString));
-        Date hora = AgendaEjecutiva.localTimeToDate(LocalTime.parse(horaString));
-        Date horaFinal = AgendaEjecutiva.localTimeToDate(LocalTime.parse(horaFinalString));
-        Date fechaCreacion = new Date(System.currentTimeMillis());
+        String reporte = AgendaEjecutiva.obtenerTablaHtmlReporte(agendaObj.getCitaList(), fechaDesde, fechaHasta);
         
-        CitaPK citaPK = new CitaPK(user, agenda.getAgendaPK().getNombre(), crearIdCita());
-        Cita cita = new Cita(citaPK, asunto, anotacion, hora, fecha, false, fechaCreacion, horaFinal);
-        return cita;
+        request.getSession().setAttribute("user", user);
+        request.getSession().setAttribute("agenda", agenda);
+        request.getSession().setAttribute("agendas", agendas);
+        request.getSession().setAttribute("reporte", reporte);
+        response.sendRedirect("vistaReporte.jsp");
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

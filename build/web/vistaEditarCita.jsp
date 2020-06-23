@@ -45,9 +45,6 @@
     String time = horaStr+":"+minutoStr;
     
     String descripcion = cita.getDescripcion();
-    
-    String minDate = "'"+AgendaEjecutiva.getFechaStringYearMonthDay()+"'";
-    String minHour = "'"+AgendaEjecutiva.getTimeStringHourMinute()+"'";
 %>
 
 <html>
@@ -87,6 +84,9 @@
             </ul>
             
             <ul class="agendas">
+                <!--div id="crear-agenda-div">
+                   <a href="vistaCrearAgenda.jsp" id="crear-agenda-link"><button type="submit">Crear Agenda</button></a> 
+                </div-->
                 <%=agendas%>
             </ul>
             

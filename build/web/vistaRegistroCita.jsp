@@ -62,6 +62,9 @@
             </ul>
             
             <ul class="agendas">
+                <!--div id="crear-agenda-div">
+                   <a href="vistaCrearAgenda.jsp" id="crear-agenda-link"><button type="submit">Crear Agenda</button></a> 
+                </div-->
                 <%=agendas%>
             </ul>
             
@@ -80,15 +83,19 @@
             <div class="card">
                 <h2 style="font-weight: bolder;">Ingrese los datos la cita</h2>
                 <form  id='form-registrar-cita' action='leer_formulario_crear_cita.do' method='POST'>
-                
+                <label>Asunto</label>
                 <input type='text' name='asunto-cita' placeholder='Asunto' required/>
-                <input type='date' name='fecha-cita' placeholder='Fecha de Fertilizante' min=<%=minDate%> required/>
-                <input type='time' name='hora-cita' placeholder='Hora' required/>
+                <label>Fecha de cita</label>
+                <input type='date' name='fecha-cita' placeholder='' min=<%=minDate%> required/>
+                <label>Hora de inicio</label>
+                <input type='time' name='hora-cita' placeholder='Hora de inicio' required/>
+                <label>Hora de terminacion</label>
+                <input type='time' name='hora-final' placeholder='Hora de terminacion' required/>
+                <label>Informacion adicional</label>
                 <textarea name='anotacion' rows='4' cols='50' placeholder='Informacion adicional'></textarea>
                 <button type='submit' id="button-registrar">Crear</button>
                 </form>
             </div>
-            </ul>
             
         </div>
     </body>

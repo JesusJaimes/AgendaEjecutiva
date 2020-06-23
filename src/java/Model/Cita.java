@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -43,7 +42,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cita.findByCompletada", query = "SELECT c FROM Cita c WHERE c.completada = :completada"),
     @NamedQuery(name = "Cita.findByUsuario", query = "SELECT c FROM Cita c WHERE c.citaPK.usuario = :usuario"),
     @NamedQuery(name = "Cita.findByAgenda", query = "SELECT c FROM Cita c WHERE c.citaPK.agenda = :agenda"),
-    @NamedQuery(name = "Cita.findById", query = "SELECT c FROM Cita c WHERE c.citaPK.id = :id")})
+    @NamedQuery(name = "Cita.findById", query = "SELECT c FROM Cita c WHERE c.citaPK.id = :id"),
+    @NamedQuery(name = "Cita.findByFechaCreacion", query = "SELECT c FROM Cita c WHERE c.fechaCreacion = :fechaCreacion"),
+    @NamedQuery(name = "Cita.findByHoraFinal", query = "SELECT c FROM Cita c WHERE c.horaFinal = :horaFinal")})
 public class Cita implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,11 +62,17 @@ public class Cita implements Serializable {
     private Date fecha;
     @Column(name = "completada")
     private Boolean completada;
+    @Column(name = "fecha_creacion")
+    @Temporal(TemporalType.DATE)
+    private Date fechaCreacion;
+    @Column(name = "hora_final")
+    @Temporal(TemporalType.TIME)
+    private Date horaFinal;
     @JoinColumns({
         @JoinColumn(name = "usuario", referencedColumnName = "usuario", insertable = false, updatable = false),
         @JoinColumn(name = "agenda", referencedColumnName = "nombre", insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Agenda agenda;
+    private Agenda agenda1;
 
     public Cita() {
     }
@@ -77,14 +84,16 @@ public class Cita implements Serializable {
     public Cita(String usuario, String agenda, long id) {
         this.citaPK = new CitaPK(usuario, agenda, id);
     }
-    
-    public Cita(CitaPK citaPK, String asunto, String descripcion, Date hora, Date fecha, Boolean completada) {
+
+    public Cita(CitaPK citaPK, String asunto, String descripcion, Date hora, Date fecha, Boolean completada, Date fechaCreacion, Date horaFinal) {
         this.citaPK = citaPK;
         this.asunto = asunto;
         this.descripcion = descripcion;
         this.hora = hora;
         this.fecha = fecha;
         this.completada = completada;
+        this.fechaCreacion = fechaCreacion;
+        this.horaFinal = horaFinal;
     }
 
     public CitaPK getCitaPK() {
@@ -135,12 +144,28 @@ public class Cita implements Serializable {
         this.completada = completada;
     }
 
-    public Agenda getAgenda1() {
-        return agenda;
+    public Date getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setAgenda1(Agenda agenda) {
-        this.agenda = agenda;
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public Date getHoraFinal() {
+        return horaFinal;
+    }
+
+    public void setHoraFinal(Date horaFinal) {
+        this.horaFinal = horaFinal;
+    }
+
+    public Agenda getAgenda1() {
+        return agenda1;
+    }
+
+    public void setAgenda1(Agenda agenda1) {
+        this.agenda1 = agenda1;
     }
 
     @Override
@@ -172,38 +197,48 @@ public class Cita implements Serializable {
         
         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
         String date = DATE_FORMAT.format(this.getFecha());
-        Instant instant = Instant.ofEpochMilli(this.getHora().getTime());
-        LocalTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
-        String horaStr = ""+res.getHour();
-        String minutoStr = ""+res.getMinute();
 
-        if(horaStr.length()==1){
-            horaStr = "0"+horaStr;
+        String time = AgendaEjecutiva.formatDateToStringHour(this.hora);
+        String time2 = AgendaEjecutiva.formatDateToStringHour(this.horaFinal);
+        String cita ="";
+        if(getCompletada()){
+            cita = "<li class='cita'>"
+            + "<div class='datos-cita'>"
+            + "<span><b>Fecha:</b> "+date+" <b>|</b><b>Hora Inicio:</b> "+time+" <b>|</b> <b>Hora Terminacion:</b> "+time2
+            + "<span class='contbtncita'>"
+            + "<form action='ir_detalle_cita.do' method='POST'>"
+                    + "<input type='text' name='idcita' style='display:none;' value='"+this.getCitaPK().getId()+"' required/>"
+                    + "<button class='btncita'><i class=\"fas fa-info\"></i></button></form>"
+            + "<form action='eliminar_cita.do' method='POST'>"
+                    + "<input type='text' name='idcita' style='display:none;' value='"+this.getCitaPK().getId()+"' required/>"
+                    + "<button class='btncita'><i class=\"fas fa-trash-alt\"></i></button></form>"
+            + "</span>"
+            + "</span>"
+            + "<p class='separator'></p>"
+            + "<p style='word-wrap: break-word;'><b>"+this.getAsunto()+"</b></p>"
+            + "</div>"
+            + "</li>";
+        }else{
+            cita = "<li class='cita'>"
+            + "<div class='datos-cita'>"
+            + "<span><b>Fecha:</b> "+date+" <b>|</b> <b>Hora Inicio:</b> "+time+" <b>|</b> <b>Hora Terminacion:</b> "+time2
+            + "<span class='contbtncita'>"
+            + "<form action='ir_detalle_cita.do' method='POST'>"
+                    + "<input type='text' name='idcita' style='display:none;' value='"+this.getCitaPK().getId()+"' required/>"
+                    + "<button class='btncita'><i class=\"fas fa-info\"></i></button></form>"
+            + "<form action='eliminar_cita.do' method='POST'>"
+                    + "<input type='text' name='idcita' style='display:none;' value='"+this.getCitaPK().getId()+"' required/>"
+                    + "<button class='btncita'><i class=\"fas fa-trash-alt\"></i></button></form>"
+            + "<form action='marcar_cita.do' method='POST'>"
+                    + "<input type='text' name='idcita' style='display:none;' value='"+this.getCitaPK().getId()+"' required/>"
+                    + "<button class='btncita'><i class=\"fas fa-check-square\"></i></button></form>"
+            + "</span>"
+            + "</span>"
+            + "<p class='separator'></p>"
+            + "<p style='word-wrap: break-word;'><b>"+this.getAsunto()+"</b></p>"
+            + "</div>"
+            + "</li>";
         }
-
-        if(minutoStr.length()==1){
-            minutoStr = "0"+minutoStr;
-        }
-
-        String time = horaStr+":"+minutoStr;
-
-        String cita = "<li class='cita'>"
-        + "<div class='datos-cita'>"
-        + "<span><b>Fecha:</b> "+date+" <b>|</b> <b>Hora:</b> "+time
-        + "<span class='contbtncita'>"
-        + "<form action='ir_detalle_cita.do' method='POST'>"
-                + "<input type='text' name='idcita' style='display:none;' value='"+this.getCitaPK().getId()+"' required/>"
-                + "<button class='btncita'><i class=\"fas fa-info\"></i></button></form>"
-        + "<form action='eliminar_cita.do' method='POST'>"
-                + "<input type='text' name='idcita' style='display:none;' value='"+this.getCitaPK().getId()+"' required/>"
-                + "<button class='btncita'><i class=\"fas fa-trash-alt\"></i></button></form>"
-        + "</span>"
-        + "</span>"
-        + "<p class='separator'></p>"
-        + "<p style='word-wrap: break-word;'><b>"+this.getAsunto()+"</b></p>"
-        + "</div>"
-        + "</li>";
-            
         
         return cita;
     }

@@ -7,11 +7,6 @@ package Model;
 
 import Negocio.AgendaEjecutiva;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -54,8 +49,8 @@ public class Agenda implements Serializable {
     private Date fecha;
     @JoinColumn(name = "usuario", referencedColumnName = "email", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Usuario usuario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "agenda")
+    private Usuario usuario1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "agenda1")
     private List<Cita> citaList;
 
     public Agenda() {
@@ -70,11 +65,9 @@ public class Agenda implements Serializable {
     }
 
     public Agenda(AgendaPK agendaPK, String descripcion, Date fecha, Usuario usuario) {
-        this.agendaPK = agendaPK;
         this.descripcion = descripcion;
         this.fecha = fecha;
-        this.usuario = usuario;
-        this.citaList = citaList;
+        this.usuario1 = usuario;
     }
 
     public AgendaPK getAgendaPK() {
@@ -102,11 +95,11 @@ public class Agenda implements Serializable {
     }
 
     public Usuario getUsuario1() {
-        return usuario;
+        return usuario1;
     }
 
-    public void setUsuario1(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuario1(Usuario usuario1) {
+        this.usuario1 = usuario1;
     }
 
     @XmlTransient
@@ -143,16 +136,28 @@ public class Agenda implements Serializable {
         return "Model.Agenda[ agendaPK=" + agendaPK + " ]";
     }
     
-    public String listaCitasToHtmlFormat(){
+    public String[] listaCitasToHtmlFormat(){
         List<Cita> citasList = getCitaList();
+        String[] citasArray = new String[3];
         String citas = "";
+        String citasRealizadas = "";
+        String citasPendientes = "";
         if(citasList!=null && !citasList.isEmpty()){
             AgendaEjecutiva.odernarCitas(citasList, 0, ((citasList.size())-1));
             for(Cita c: citasList){
-                citas += c.citaToCardHtmlFormat();
+                if(c.getCompletada()){
+                    citasRealizadas += c.citaToCardHtmlFormat();
+                }else if(c.getFecha().before(new Date(System.currentTimeMillis()))){
+                    citasPendientes += c.citaToCardHtmlFormat();
+                }else{
+                    citas += c.citaToCardHtmlFormat();
+                }
             }
         }
-        return citas;
+        citasArray[0] = citas;
+        citasArray[1] = citasRealizadas;
+        citasArray[2] = citasPendientes;
+        return citasArray;
     }
     
 }

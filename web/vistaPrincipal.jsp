@@ -22,7 +22,10 @@
     String agenda = (String)request.getSession().getAttribute("agenda");
     String agendas = (String)request.getSession().getAttribute("agendas");
     Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
-    String citas = agendaObj.listaCitasToHtmlFormat();
+    String[] citasArray = agendaObj.listaCitasToHtmlFormat();
+    String citas = citasArray[0];
+    String citasRealizadas = citasArray[1];
+    String citasPendientes = citasArray[2];
     System.out.println("-------------------------"+agenda);
     System.out.println("-------------------------"+agendaObj.getCitaList().size());
     request.getSession().setAttribute("user", user);
@@ -66,27 +69,76 @@
                     </a>
                 </li>
             </ul>
-           
             
             <ul class="agendas">
+                <!--div id="crear-agenda-div">
+                   <a href="vistaCrearAgenda.jsp" id="crear-agenda-link"><button type="submit">Crear Agenda</button></a> 
+                </div-->
                 <%=agendas%>
             </ul>
             
-        </nav>
+        </nav>  
       
-            
         <div class="contedio" >
             
             <div class="floating-button-placeholder">
-                <a href="vistaRegistroCita.jsp" id="button-plus" class="floating-button">
-                    <i class="fas fa-plus"></i>
+               
+                <a id="button-menu" class="floating-button">
+                    <i class="fas fa-bars"></i>
                 </a>
-                <span id="floating-lable">Crear Cita</span>
+             
+                <div class="floating-options">
+
+                    <div class="floating-option">
+                        <a href="vistaRegistroCita.jsp" id="button-crear" class="floating-button">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                        <span class="fab-label">Crear cita</span>
+                    </div>
+
+                    <div class="floating-option">
+                        <a href="vistaGenerarReporte.jsp" id="button-reporte" class="floating-button">
+                             <i class="far fa-file-alt"></i>
+                        </a>
+                        <span class="fab-label">Generar reporte</span>
+                    </div>
+                    
+                    <div class="floating-option">
+                        <a href="vista_registrar_veneno.jsp" id="button-editar" class="floating-button">
+                             <i class="fas fa-pen"></i>
+                        </a>
+                        <span class="fab-label">Editar esta agenda</span>
+                    </div>
+
+                    <div class="floating-option">
+                        <a href="vista_registrar_veneno.jsp" id="button-eliminar" class="floating-button">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                        <span class="fab-label">Eliminar esta agenda</span>
+                    </div>
+
+                </div>
+            </div> 
+
+            <div class="tab-citas">
+                <button class="tablinks active" onclick="openSection(event, 'citas-futuras')">Proximas Citas</button>
+                <button class="tablinks" onclick="openSection(event, 'citas-realizadas')">Citas Realizadas</button>
+                <button class="tablinks" onclick="openSection(event, 'citas-pendientes')">Citas Pendientes</button>
             </div>
             
-            <ul class="lista-citas">
+            <ul id="citas-futuras" class="lista-citas" style="display: flex">
                 <%out.print(citas);%>
             </ul>
+            
+            <ul id="citas-realizadas" class="lista-citas" style="display: none">
+                <%out.print(citasRealizadas);%>
+            </ul>
+            
+            <ul id="citas-pendientes" class="lista-citas" style="display: none">
+                <%out.print(citasPendientes);%>
+            </ul>
+            
+            
             
         </div>
     </body>

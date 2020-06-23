@@ -81,6 +81,9 @@
             </ul>
             
             <ul class="agendas">
+                <!--div id="crear-agenda-div">
+                   <a href="vistaCrearAgenda.jsp" id="crear-agenda-link"><button type="submit">Crear Agenda</button></a> 
+                </div-->
                 <%=agendas%>
             </ul>
             
@@ -97,13 +100,16 @@
             </div>
             
             <div class="card">
-                <h2><%=asunto%></h2>
+                <h2 style='word-wrap: break-word;'><%=asunto%></h2>
                 <p>Fecha: <%=date%></p>
                 <p>Hora: <%=time%></p>
-                <p><%=descripcion%></p>
-                <form action='ir_editar_cita.do' method='POST'>
-                    <button type="submit" id="button-editar">Editar</button>
-                </form>
+                <p style='word-wrap: break-word;'><%=descripcion%></p>
+                <%if(!cita.getCompletada()){%>
+                    <form action='ir_editar_cita.do' method='POST'>
+                        <button type="submit" id="button-editar">Editar</button>
+                    </form>
+                <%}%>
+                
                 
             </div>
             </ul>
