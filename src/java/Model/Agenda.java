@@ -49,8 +49,8 @@ public class Agenda implements Serializable {
     private Date fecha;
     @JoinColumn(name = "usuario", referencedColumnName = "email", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Usuario usuario1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "agenda1")
+    private Usuario usuario;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "agenda")
     private List<Cita> citaList;
 
     public Agenda() {
@@ -65,9 +65,10 @@ public class Agenda implements Serializable {
     }
 
     public Agenda(AgendaPK agendaPK, String descripcion, Date fecha, Usuario usuario) {
+        this.agendaPK = agendaPK;
         this.descripcion = descripcion;
         this.fecha = fecha;
-        this.usuario1 = usuario;
+        this.usuario = usuario;
     }
 
     public AgendaPK getAgendaPK() {
@@ -94,12 +95,12 @@ public class Agenda implements Serializable {
         this.fecha = fecha;
     }
 
-    public Usuario getUsuario1() {
-        return usuario1;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuario1(Usuario usuario1) {
-        this.usuario1 = usuario1;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @XmlTransient

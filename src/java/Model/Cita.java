@@ -72,7 +72,7 @@ public class Cita implements Serializable {
         @JoinColumn(name = "usuario", referencedColumnName = "usuario", insertable = false, updatable = false),
         @JoinColumn(name = "agenda", referencedColumnName = "nombre", insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Agenda agenda1;
+    private Agenda agenda;
 
     public Cita() {
     }
@@ -160,12 +160,12 @@ public class Cita implements Serializable {
         this.horaFinal = horaFinal;
     }
 
-    public Agenda getAgenda1() {
-        return agenda1;
+    public Agenda getAgenda() {
+        return agenda;
     }
 
-    public void setAgenda1(Agenda agenda1) {
-        this.agenda1 = agenda1;
+    public void setAgenda(Agenda agenda) {
+        this.agenda = agenda;
     }
 
     @Override

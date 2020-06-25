@@ -29,7 +29,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <!--my css-->
-        <link href="css/vista_principal_style.css" rel="stylesheet" type="text/css"/>
+        <link href="css/vista_crear_agenda_style.css" rel="stylesheet" type="text/css"/>
         <!--my javascirpt-->
         <script type="text/JavaScript" src="js/funcionesJS.js"></script>
         <!--google icons-->
@@ -60,9 +60,9 @@
            
             
             <ul class="agendas">
-                <!--div id="crear-agenda-div">
+                <div id="crear-agenda-div">
                    <a href="vistaCrearAgenda.jsp" id="crear-agenda-link"><button type="submit">Crear Agenda</button></a> 
-                </div-->
+                </div>
                 <%=agendas%>
             </ul>
             
@@ -79,16 +79,12 @@
             </div>
             
             <div class="card">
-                <h2 style="font-weight: bolder;">Ingrese los datos la cita</h2>
-                <form  id='form-registrar-cita' action='leer_formulario_crear_cita.do' method='POST'>
-                <label>Asunto</label>
-                <input type='text' name='asunto-cita' placeholder='Asunto' required/>
-                <label>Fecha de inicio</label>
-                <input type='time' name='hora-cita' placeholder='Hora de inicio' required/>
-                <label>Hora de terminacion</label>
-                <input type='time' name='hora-cita' placeholder='Hora de terminacion' required/>
-                <label>Informacion adicional</label>
-                <textarea name='anotacion' rows='4' cols='50' placeholder='Informacion adicional'></textarea>
+                <h2 style="font-weight: bolder;">Ingrese los datos la Agenda</h2>
+                <form  id='form-registrar-agenda' action='leer_formulario_crear_agenda.do' method='POST'>
+                <label>Nombre</label>
+                <input type='text' name='nombre' placeholder='Nombre' required/>
+                <label>Descripcion</label>
+                <textarea name='descripcion' rows='4' cols='50' placeholder='Descripcion de la Agenda'></textarea>
                 <button type='submit' id="button-registrar">Crear</button>
                 </form>
             </div>

@@ -52,7 +52,7 @@ public class Usuario implements Serializable {
     private Date fecharegistro;
     @Column(name = "cargo")
     private String cargo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private List<Agenda> agendaList;
 
     public Usuario() {

@@ -14,7 +14,6 @@ function validarContraseña(){
     }
 }
 
-
 function openSection(evt, sectionName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("lista-citas");

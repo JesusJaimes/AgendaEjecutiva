@@ -56,9 +56,9 @@
             </ul>
             
             <ul class="agendas">
-                <!--div id="crear-agenda-div">
+                <div id="crear-agenda-div">
                    <a href="vistaCrearAgenda.jsp" id="crear-agenda-link"><button type="submit">Crear Agenda</button></a> 
-                </div-->
+                </div>
                 <%=agendas%>
             </ul>
             

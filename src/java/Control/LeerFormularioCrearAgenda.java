@@ -7,13 +7,13 @@ package Control;
 
 import Model.Agenda;
 import Model.AgendaPK;
+import static Model.Agenda_.usuario;
 import Model.Cita;
 import Model.Usuario;
 import Negocio.AgendaEjecutiva;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romario
  */
-public class LeerFormularioRegistroUsuario extends HttpServlet {
+public class LeerFormularioCrearAgenda extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,24 +37,19 @@ public class LeerFormularioRegistroUsuario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String nombre = request.getParameter("nombre");
-        String cargo = request.getParameter("cargo");
-        String password = request.getParameter("password");
-        String email = request.getParameter("email");
-        Date fechaRegistro = new Date(System.currentTimeMillis());
-        Usuario usuario = new Usuario(nombre, email, password, cargo, fechaRegistro);
-        AgendaPK agendaPK = new AgendaPK("Mi agenda", email);
-        agendaPK.setNombre("Mi agenda");
-        String descripcion = "Agenda generada automaticamente";
+        String user = (String)request.getSession().getAttribute("user");
+        Usuario usuario = AgendaEjecutiva.getUsuario(user);
+        AgendaPK agendaPK = new AgendaPK(request.getParameter("nombre"), user);
+        String descripcion = request.getParameter("descripcion");
         Date fecha = new Date(System.currentTimeMillis());
         Agenda agenda = new Agenda(agendaPK, descripcion, fecha, usuario);
 
-        if(!email.endsWith("@ufps.edu.co")){
-            response.sendRedirect("vistaCreacionUsuarioCorreoInvalido.jsp");
-        }else if(AgendaEjecutiva.insertarUsuario(usuario) && AgendaEjecutiva.insertarAgenda(agenda)){
-            response.sendRedirect("vistaCreacionUsuarioExitosa.jsp");
-        }else{
-            request.getRequestDispatcher("registroError.html").forward(request, response);
+        if(AgendaEjecutiva.insertarAgenda(agenda)){
+            usuario.getAgendaList().add(agenda);
+            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("agenda", agenda.getAgendaPK().getNombre());
+            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda.getAgendaPK().getNombre()));
+            response.sendRedirect("vistaPrincipal.jsp");
         }
     }
 

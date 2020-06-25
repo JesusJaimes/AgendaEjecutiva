@@ -71,9 +71,9 @@
             </ul>
             
             <ul class="agendas">
-                <!--div id="crear-agenda-div">
+                <div id="crear-agenda-div">
                    <a href="vistaCrearAgenda.jsp" id="crear-agenda-link"><button type="submit">Crear Agenda</button></a> 
-                </div-->
+                </div>
                 <%=agendas%>
             </ul>
             
@@ -104,14 +104,14 @@
                     </div>
                     
                     <div class="floating-option">
-                        <a href="vista_registrar_veneno.jsp" id="button-editar" class="floating-button">
+                        <a href="#" id="button-editar" class="floating-button">
                              <i class="fas fa-pen"></i>
                         </a>
                         <span class="fab-label">Editar esta agenda</span>
                     </div>
 
                     <div class="floating-option">
-                        <a href="vista_registrar_veneno.jsp" id="button-eliminar" class="floating-button">
+                        <a href="#" id="button-eliminar" class="floating-button">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                         <span class="fab-label">Eliminar esta agenda</span>

@@ -49,15 +49,15 @@ public class AgendaJpaController implements Serializable {
         if (agenda.getCitaList() == null) {
             agenda.setCitaList(new ArrayList<Cita>());
         }
-        agenda.getAgendaPK().setUsuario(agenda.getUsuario1().getEmail());
+        agenda.getAgendaPK().setUsuario(agenda.getUsuario().getEmail());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuario usuario1 = agenda.getUsuario1();
-            if (usuario1 != null) {
-                usuario1 = em.getReference(usuario1.getClass(), usuario1.getEmail());
-                agenda.setUsuario1(usuario1);
+            Usuario usuario = agenda.getUsuario();
+            if (usuario != null) {
+                usuario = em.getReference(usuario.getClass(), usuario.getEmail());
+                agenda.setUsuario(usuario);
             }
             List<Cita> attachedCitaList = new ArrayList<Cita>();
             for (Cita citaListCitaToAttach : agenda.getCitaList()) {
@@ -66,17 +66,17 @@ public class AgendaJpaController implements Serializable {
             }
             agenda.setCitaList(attachedCitaList);
             em.persist(agenda);
-            if (usuario1 != null) {
-                usuario1.getAgendaList().add(agenda);
-                usuario1 = em.merge(usuario1);
+            if (usuario != null) {
+                usuario.getAgendaList().add(agenda);
+                usuario = em.merge(usuario);
             }
             for (Cita citaListCita : agenda.getCitaList()) {
-                Agenda oldAgenda1OfCitaListCita = citaListCita.getAgenda1();
-                citaListCita.setAgenda1(agenda);
+                Agenda oldAgendaOfCitaListCita = citaListCita.getAgenda();
+                citaListCita.setAgenda(agenda);
                 citaListCita = em.merge(citaListCita);
-                if (oldAgenda1OfCitaListCita != null) {
-                    oldAgenda1OfCitaListCita.getCitaList().remove(citaListCita);
-                    oldAgenda1OfCitaListCita = em.merge(oldAgenda1OfCitaListCita);
+                if (oldAgendaOfCitaListCita != null) {
+                    oldAgendaOfCitaListCita.getCitaList().remove(citaListCita);
+                    oldAgendaOfCitaListCita = em.merge(oldAgendaOfCitaListCita);
                 }
             }
             em.getTransaction().commit();
@@ -93,14 +93,14 @@ public class AgendaJpaController implements Serializable {
     }
 
     public void edit(Agenda agenda) throws IllegalOrphanException, NonexistentEntityException, Exception {
-        agenda.getAgendaPK().setUsuario(agenda.getUsuario1().getEmail());
+        agenda.getAgendaPK().setUsuario(agenda.getUsuario().getEmail());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Agenda persistentAgenda = em.find(Agenda.class, agenda.getAgendaPK());
-            Usuario usuario1Old = persistentAgenda.getUsuario1();
-            Usuario usuario1New = agenda.getUsuario1();
+            Usuario usuarioOld = persistentAgenda.getUsuario();
+            Usuario usuarioNew = agenda.getUsuario();
             List<Cita> citaListOld = persistentAgenda.getCitaList();
             List<Cita> citaListNew = agenda.getCitaList();
             List<String> illegalOrphanMessages = null;
@@ -109,15 +109,15 @@ public class AgendaJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Cita " + citaListOldCita + " since its agenda1 field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Cita " + citaListOldCita + " since its agenda field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            if (usuario1New != null) {
-                usuario1New = em.getReference(usuario1New.getClass(), usuario1New.getEmail());
-                agenda.setUsuario1(usuario1New);
+            if (usuarioNew != null) {
+                usuarioNew = em.getReference(usuarioNew.getClass(), usuarioNew.getEmail());
+                agenda.setUsuario(usuarioNew);
             }
             List<Cita> attachedCitaListNew = new ArrayList<Cita>();
             for (Cita citaListNewCitaToAttach : citaListNew) {
@@ -127,22 +127,22 @@ public class AgendaJpaController implements Serializable {
             citaListNew = attachedCitaListNew;
             agenda.setCitaList(citaListNew);
             agenda = em.merge(agenda);
-            if (usuario1Old != null && !usuario1Old.equals(usuario1New)) {
-                usuario1Old.getAgendaList().remove(agenda);
-                usuario1Old = em.merge(usuario1Old);
+            if (usuarioOld != null && !usuarioOld.equals(usuarioNew)) {
+                usuarioOld.getAgendaList().remove(agenda);
+                usuarioOld = em.merge(usuarioOld);
             }
-            if (usuario1New != null && !usuario1New.equals(usuario1Old)) {
-                usuario1New.getAgendaList().add(agenda);
-                usuario1New = em.merge(usuario1New);
+            if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
+                usuarioNew.getAgendaList().add(agenda);
+                usuarioNew = em.merge(usuarioNew);
             }
             for (Cita citaListNewCita : citaListNew) {
                 if (!citaListOld.contains(citaListNewCita)) {
-                    Agenda oldAgenda1OfCitaListNewCita = citaListNewCita.getAgenda1();
-                    citaListNewCita.setAgenda1(agenda);
+                    Agenda oldAgendaOfCitaListNewCita = citaListNewCita.getAgenda();
+                    citaListNewCita.setAgenda(agenda);
                     citaListNewCita = em.merge(citaListNewCita);
-                    if (oldAgenda1OfCitaListNewCita != null && !oldAgenda1OfCitaListNewCita.equals(agenda)) {
-                        oldAgenda1OfCitaListNewCita.getCitaList().remove(citaListNewCita);
-                        oldAgenda1OfCitaListNewCita = em.merge(oldAgenda1OfCitaListNewCita);
+                    if (oldAgendaOfCitaListNewCita != null && !oldAgendaOfCitaListNewCita.equals(agenda)) {
+                        oldAgendaOfCitaListNewCita.getCitaList().remove(citaListNewCita);
+                        oldAgendaOfCitaListNewCita = em.merge(oldAgendaOfCitaListNewCita);
                     }
                 }
             }
@@ -181,15 +181,15 @@ public class AgendaJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Agenda (" + agenda + ") cannot be destroyed since the Cita " + citaListOrphanCheckCita + " in its citaList field has a non-nullable agenda1 field.");
+                illegalOrphanMessages.add("This Agenda (" + agenda + ") cannot be destroyed since the Cita " + citaListOrphanCheckCita + " in its citaList field has a non-nullable agenda field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Usuario usuario1 = agenda.getUsuario1();
-            if (usuario1 != null) {
-                usuario1.getAgendaList().remove(agenda);
-                usuario1 = em.merge(usuario1);
+            Usuario usuario = agenda.getUsuario();
+            if (usuario != null) {
+                usuario.getAgendaList().remove(agenda);
+                usuario = em.merge(usuario);
             }
             em.remove(agenda);
             em.getTransaction().commit();

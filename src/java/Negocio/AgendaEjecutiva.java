@@ -57,11 +57,11 @@ public class AgendaEjecutiva {
     public static boolean insertarUsuario(Usuario usuario){
          try{
             usuarioDAO.create(usuario);
-            System.out.println("true");
+//            System.out.println("true");
             return true;
             
         }catch(Exception e){
-            System.out.println("false");
+//            System.out.println("false");
             return false;
         }
     }
@@ -69,11 +69,11 @@ public class AgendaEjecutiva {
     public static boolean insertarAgenda(Agenda agenda){
          try{
             agendaDAO.create(agenda);
-            System.out.println("true");
+//            System.out.println("true");
             return true;
             
         }catch(Exception e){
-            System.out.println("false");
+//            System.out.println("false");
             return false;
         }
     }
@@ -96,17 +96,27 @@ public class AgendaEjecutiva {
         }
     }
     
+    public static void actualizarUsuario(Usuario usuario){
+        try{
+            Usuario usuarioExistente = getUsuario(usuario.getEmail());
+            usuarioExistente.setAgendaList(usuario.getAgendaList());
+            usuarioDAO.edit(usuarioExistente);
+        }catch(Exception e){
+            System.out.println(e.getStackTrace().toString());
+        }
+    }
+    
     public static boolean insertarCita(Cita cita){
          try{
-            System.out.println("SE VA A INTENTAR INSERTAR CITA");
+//            System.out.println("SE VA A INTENTAR INSERTAR CITA");
             citaDAO.create(cita);
-            System.out.println("SE LOGRO INSERTAR CITA");
-            System.out.println("true");
+//            System.out.println("SE LOGRO INSERTAR CITA");
+//            System.out.println("true");
             return true;
             
         }catch(Exception e){
-            System.out.println("SE FALLO INSERTAR CITA");
-            System.out.println("false");
+//            System.out.println("SE FALLO INSERTAR CITA");
+//            System.out.println("false");
             return false;
         }
     }

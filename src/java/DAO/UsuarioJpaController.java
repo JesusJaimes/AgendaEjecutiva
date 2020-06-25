@@ -56,12 +56,12 @@ public class UsuarioJpaController implements Serializable {
             usuario.setAgendaList(attachedAgendaList);
             em.persist(usuario);
             for (Agenda agendaListAgenda : usuario.getAgendaList()) {
-                Usuario oldUsuario1OfAgendaListAgenda = agendaListAgenda.getUsuario1();
-                agendaListAgenda.setUsuario1(usuario);
+                Usuario oldUsuarioOfAgendaListAgenda = agendaListAgenda.getUsuario();
+                agendaListAgenda.setUsuario(usuario);
                 agendaListAgenda = em.merge(agendaListAgenda);
-                if (oldUsuario1OfAgendaListAgenda != null) {
-                    oldUsuario1OfAgendaListAgenda.getAgendaList().remove(agendaListAgenda);
-                    oldUsuario1OfAgendaListAgenda = em.merge(oldUsuario1OfAgendaListAgenda);
+                if (oldUsuarioOfAgendaListAgenda != null) {
+                    oldUsuarioOfAgendaListAgenda.getAgendaList().remove(agendaListAgenda);
+                    oldUsuarioOfAgendaListAgenda = em.merge(oldUsuarioOfAgendaListAgenda);
                 }
             }
             em.getTransaction().commit();
@@ -91,7 +91,7 @@ public class UsuarioJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Agenda " + agendaListOldAgenda + " since its usuario1 field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Agenda " + agendaListOldAgenda + " since its usuario field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -107,12 +107,12 @@ public class UsuarioJpaController implements Serializable {
             usuario = em.merge(usuario);
             for (Agenda agendaListNewAgenda : agendaListNew) {
                 if (!agendaListOld.contains(agendaListNewAgenda)) {
-                    Usuario oldUsuario1OfAgendaListNewAgenda = agendaListNewAgenda.getUsuario1();
-                    agendaListNewAgenda.setUsuario1(usuario);
+                    Usuario oldUsuarioOfAgendaListNewAgenda = agendaListNewAgenda.getUsuario();
+                    agendaListNewAgenda.setUsuario(usuario);
                     agendaListNewAgenda = em.merge(agendaListNewAgenda);
-                    if (oldUsuario1OfAgendaListNewAgenda != null && !oldUsuario1OfAgendaListNewAgenda.equals(usuario)) {
-                        oldUsuario1OfAgendaListNewAgenda.getAgendaList().remove(agendaListNewAgenda);
-                        oldUsuario1OfAgendaListNewAgenda = em.merge(oldUsuario1OfAgendaListNewAgenda);
+                    if (oldUsuarioOfAgendaListNewAgenda != null && !oldUsuarioOfAgendaListNewAgenda.equals(usuario)) {
+                        oldUsuarioOfAgendaListNewAgenda.getAgendaList().remove(agendaListNewAgenda);
+                        oldUsuarioOfAgendaListNewAgenda = em.merge(oldUsuarioOfAgendaListNewAgenda);
                     }
                 }
             }
@@ -151,7 +151,7 @@ public class UsuarioJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Agenda " + agendaListOrphanCheckAgenda + " in its agendaList field has a non-nullable usuario1 field.");
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Agenda " + agendaListOrphanCheckAgenda + " in its agendaList field has a non-nullable usuario field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
