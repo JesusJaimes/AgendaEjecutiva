@@ -7,7 +7,6 @@ package Control;
 
 import Model.Agenda;
 import Model.AgendaPK;
-import static Model.Agenda_.usuario;
 import Model.Cita;
 import Model.Usuario;
 import Negocio.AgendaEjecutiva;
@@ -39,7 +38,7 @@ public class LeerFormularioCrearAgenda extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String user = (String)request.getSession().getAttribute("user");
         Usuario usuario = AgendaEjecutiva.getUsuario(user);
-        AgendaPK agendaPK = new AgendaPK(request.getParameter("nombre"), user);
+        AgendaPK agendaPK = new AgendaPK(user);
         String descripcion = request.getParameter("descripcion");
         Date fecha = new Date(System.currentTimeMillis());
         Agenda agenda = new Agenda(agendaPK, descripcion, fecha, usuario);
@@ -47,8 +46,8 @@ public class LeerFormularioCrearAgenda extends HttpServlet {
         if(AgendaEjecutiva.insertarAgenda(agenda)){
             usuario.getAgendaList().add(agenda);
             request.getSession().setAttribute("user", user);
-            request.getSession().setAttribute("agenda", agenda.getAgendaPK().getNombre());
-            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda.getAgendaPK().getNombre()));
+            request.getSession().setAttribute("agenda", agenda.getNombre());
+            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda.getNombre()));
             response.sendRedirect("vistaPrincipal.jsp");
         }
     }

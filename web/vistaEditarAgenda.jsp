@@ -1,32 +1,28 @@
 <%-- 
-    Document   : vistaRegistroCita
-    Created on : May 16, 2020, 10:45:27 AM
+    Document   : vistaEditarAgenda
+    Created on : 26-jun-2020, 20:21:14
     Author     : Romario
 --%>
 
-<%@page import="java.time.LocalDate"%>
-<%@page import="java.util.Date"%>
-<%@page import="Model.Cita"%>
-<%@page import="java.util.List"%>
-<%@page import="Model.Usuario"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Negocio.AgendaEjecutiva"%>
 <%@page import="Model.Agenda"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+
 <%
     String user = (String)request.getSession().getAttribute("user");
     String agenda = (String)request.getSession().getAttribute("agenda");
     String agendas = (String)request.getSession().getAttribute("agendas");
-    int idAgenda = (int)request.getSession().getAttribute("idAgenda");
+    Agenda agendaObj = (Agenda)request.getSession().getAttribute("agendaObj");
     request.getSession().setAttribute("user", user);
     request.getSession().setAttribute("agenda", agenda);
     request.getSession().setAttribute("agendas", agendas);
-    request.getSession().setAttribute("idAgenda", idAgenda);
     
-    String minDate = "'"+AgendaEjecutiva.getFechaStringYearMonthDay()+"'";
-    String minHour = "'"+AgendaEjecutiva.getTimeStringHourMinute()+"'";
+    String nombre = agendaObj.getAgendaPK().getNombre();
+    String descripcion = agendaObj.getDescripcion();
+    
 %>
 
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -34,7 +30,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <!--my css-->
-        <link href="css/vista_registro_cita_style.css" rel="stylesheet" type="text/css"/>
+        <link href="css/vista_crear_agenda_style.css" rel="stylesheet" type="text/css"/>
         <!--my javascirpt-->
         <script type="text/JavaScript" src="js/funcionesJS.js"></script>
         <!--google icons-->
@@ -57,11 +53,12 @@
 
 
                 <li id="salir-button">
-                    <a href="index.html" class="nav-link">
+                    <a href="salir.do" class="nav-link">
                         <i class="fas fa-sign-out-alt"></i>
                     </a>
                 </li>
             </ul>
+           
             
             <ul class="agendas">
                 <div id="crear-agenda-div">
@@ -71,7 +68,7 @@
             </ul>
             
         </nav>
-        
+      
             
         <div class="contedio" >
             
@@ -83,23 +80,16 @@
             </div>
             
             <div class="card">
-                <h2 style="font-weight: bolder;">Ingrese los datos la cita</h2>
-                <form  id='form-registrar-cita' action='leer_formulario_crear_cita.do' method='POST'>
-                <label>Asunto</label>
-                <input type='text' name='asunto-cita' placeholder='Asunto' required/>
-                <label>Fecha de cita</label>
-                <input type='date' name='fecha-cita' placeholder='' min=<%=minDate%> required/>
-                <label>Hora de inicio</label>
-                <input type='time' name='hora-cita' placeholder='Hora de inicio' required/>
-                <label>Hora de terminacion</label>
-                <input type='time' name='hora-final' placeholder='Hora de terminacion' required/>
-                <label>Informacion adicional</label>
-                <textarea name='anotacion' rows='4' cols='50' placeholder='Informacion adicional'></textarea>
-                <button type='submit' id="button-registrar">Crear</button>
+                <h2 style="font-weight: bolder;">Edite los datos de la Agenda</h2>
+                <form  id='form-registrar-agenda' action='leer_formulario_editar_agenda.do' method='POST'>
+                <label>Nombre</label>
+                <input type='text' name='nombre' placeholder='Nombre' value='<%=nombre%>' required/>
+                <label>Descripcion</label>
+                <textarea name='descripcion' rows='4' cols='50' placeholder='Descripcion de la Agenda'><%=descripcion%></textarea>
+                <button type='submit' id="button-registrar">Editar</button>
                 </form>
             </div>
             
         </div>
     </body>
 </html>
-

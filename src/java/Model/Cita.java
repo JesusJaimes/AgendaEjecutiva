@@ -8,10 +8,6 @@ package Model;
 import Negocio.AgendaEjecutiva;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -40,11 +36,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cita.findByHora", query = "SELECT c FROM Cita c WHERE c.hora = :hora"),
     @NamedQuery(name = "Cita.findByFecha", query = "SELECT c FROM Cita c WHERE c.fecha = :fecha"),
     @NamedQuery(name = "Cita.findByCompletada", query = "SELECT c FROM Cita c WHERE c.completada = :completada"),
-    @NamedQuery(name = "Cita.findByUsuario", query = "SELECT c FROM Cita c WHERE c.citaPK.usuario = :usuario"),
-    @NamedQuery(name = "Cita.findByAgenda", query = "SELECT c FROM Cita c WHERE c.citaPK.agenda = :agenda"),
     @NamedQuery(name = "Cita.findById", query = "SELECT c FROM Cita c WHERE c.citaPK.id = :id"),
     @NamedQuery(name = "Cita.findByFechaCreacion", query = "SELECT c FROM Cita c WHERE c.fechaCreacion = :fechaCreacion"),
-    @NamedQuery(name = "Cita.findByHoraFinal", query = "SELECT c FROM Cita c WHERE c.horaFinal = :horaFinal")})
+    @NamedQuery(name = "Cita.findByHoraFinal", query = "SELECT c FROM Cita c WHERE c.horaFinal = :horaFinal"),
+    @NamedQuery(name = "Cita.findByAgenda", query = "SELECT c FROM Cita c WHERE c.citaPK.agenda = :agenda"),
+    @NamedQuery(name = "Cita.findByUsuario", query = "SELECT c FROM Cita c WHERE c.citaPK.usuario = :usuario")})
 public class Cita implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -69,8 +65,8 @@ public class Cita implements Serializable {
     @Temporal(TemporalType.TIME)
     private Date horaFinal;
     @JoinColumns({
-        @JoinColumn(name = "usuario", referencedColumnName = "usuario", insertable = false, updatable = false),
-        @JoinColumn(name = "agenda", referencedColumnName = "nombre", insertable = false, updatable = false)})
+        @JoinColumn(name = "agenda", referencedColumnName = "id", insertable = false, updatable = false),
+        @JoinColumn(name = "usuario", referencedColumnName = "usuario", insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Agenda agenda;
 
@@ -81,17 +77,17 @@ public class Cita implements Serializable {
         this.citaPK = citaPK;
     }
 
-    public Cita(String usuario, String agenda, long id) {
-        this.citaPK = new CitaPK(usuario, agenda, id);
+    public Cita(long id, int agenda, String usuario) {
+        this.citaPK = new CitaPK(id, agenda, usuario);
     }
 
-    public Cita(CitaPK citaPK, String asunto, String descripcion, Date hora, Date fecha, Boolean completada, Date fechaCreacion, Date horaFinal) {
+    public Cita(CitaPK citaPK, String asunto, String anotacion, Date hora, Date fecha, boolean b, Date fechaCreacion, Date horaFinal) {
         this.citaPK = citaPK;
         this.asunto = asunto;
-        this.descripcion = descripcion;
+        this.descripcion = anotacion;
         this.hora = hora;
         this.fecha = fecha;
-        this.completada = completada;
+        this.completada = b;
         this.fechaCreacion = fechaCreacion;
         this.horaFinal = horaFinal;
     }

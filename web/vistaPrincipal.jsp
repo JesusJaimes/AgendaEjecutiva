@@ -21,23 +21,25 @@
     String user = (String)request.getSession().getAttribute("user");
     String agenda = (String)request.getSession().getAttribute("agenda");
     String agendas = (String)request.getSession().getAttribute("agendas");
-    Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
+    int idAgenda = (int)request.getSession().getAttribute("idAgenda");
+    Agenda agendaObj = AgendaEjecutiva.getAgenda(user, idAgenda);
     String[] citasArray = agendaObj.listaCitasToHtmlFormat();
     String citas = citasArray[0];
     String citasRealizadas = citasArray[1];
     String citasPendientes = citasArray[2];
-    System.out.println("-------------------------"+agenda);
-    System.out.println("-------------------------"+agendaObj.getCitaList().size());
+    //System.out.println("-------------------------"+agenda);
+    //System.out.println("-------------------------"+agendaObj.getCitaList().size());
     request.getSession().setAttribute("user", user);
     request.getSession().setAttribute("agenda", agenda);
     request.getSession().setAttribute("agendas", agendas);
+    request.getSession().setAttribute("idAgenda", idAgenda);
     
 %>
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>TODO supply a title</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <!--my css-->
@@ -104,7 +106,7 @@
                     </div>
                     
                     <div class="floating-option">
-                        <a href="#" id="button-editar" class="floating-button">
+                        <a href="ir_vista_editar_agenda.do" id="button-editar" class="floating-button">
                              <i class="fas fa-pen"></i>
                         </a>
                         <span class="fab-label">Editar esta agenda</span>

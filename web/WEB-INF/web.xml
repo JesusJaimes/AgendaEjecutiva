@@ -52,6 +52,14 @@
         <servlet-name>LeerFormularioCrearAgenda</servlet-name>
         <servlet-class>Control.LeerFormularioCrearAgenda</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>IrVistaEditarAgenda</servlet-name>
+        <servlet-class>Control.IrVistaEditarAgenda</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LeerFormularioEditarAgenda</servlet-name>
+        <servlet-class>Control.LeerFormularioEditarAgenda</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LeerFormularioLogin</servlet-name>
         <url-pattern>/leer_formulario_login.do</url-pattern>
@@ -103,6 +111,14 @@
     <servlet-mapping>
         <servlet-name>LeerFormularioCrearAgenda</servlet-name>
         <url-pattern>/leer_formulario_crear_agenda.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IrVistaEditarAgenda</servlet-name>
+        <url-pattern>/ir_vista_editar_agenda.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeerFormularioEditarAgenda</servlet-name>
+        <url-pattern>/leer_formulario_editar_agenda.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

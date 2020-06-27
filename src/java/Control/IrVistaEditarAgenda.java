@@ -7,7 +7,6 @@ package Control;
 
 import Model.Agenda;
 import Model.Cita;
-import Model.CitaPK;
 import Model.Usuario;
 import Negocio.AgendaEjecutiva;
 import java.io.IOException;
@@ -21,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romario
  */
-public class EliminarCita extends HttpServlet {
+public class IrVistaEditarAgenda extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,19 +36,15 @@ public class EliminarCita extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String user = (String)request.getSession().getAttribute("user");
         String agenda = (String)request.getSession().getAttribute("agenda");
-        int idAgenda = (int)request.getSession().getAttribute("idAgenda");
-        long idCita = Long.parseLong(request.getParameter("idcita"));
-        Usuario usuario = AgendaEjecutiva.getUsuario(user);
-        Cita cita = AgendaEjecutiva.getCita(new CitaPK(user, idAgenda, idCita));
-        if(AgendaEjecutiva.eliminarCita(cita.getCitaPK())){
-//            Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
-            request.getSession().setAttribute("user", user);
-            request.getSession().setAttribute("agenda", agenda);
-            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda));
-//            request.getSession().setAttribute("citas", agendaObj.listaCitasToHtmlFormat());
-            response.sendRedirect("vistaPrincipal.jsp");
-        }
+        String agendas = (String)request.getSession().getAttribute("agendas");
+        String idAgenda = (String)request.getSession().getAttribute("idAgenda");
+        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, Integer.parseInt(idAgenda));
         
+        request.getSession().setAttribute("user", user);
+        request.getSession().setAttribute("agenda", agenda);
+        request.getSession().setAttribute("agendas", agendas);
+        request.getSession().setAttribute("agendaObj", agendaObj);
+        response.sendRedirect("vistaEditarAgenda.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

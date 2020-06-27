@@ -39,7 +39,8 @@ public class IrDetalleCita extends HttpServlet {
         String agenda = (String)request.getSession().getAttribute("agenda");
         long idCita = Long.parseLong(request.getParameter("idcita"));
         Usuario usuario = AgendaEjecutiva.getUsuario(user);
-        Cita cita = AgendaEjecutiva.getCita(new CitaPK(user, agenda, idCita));
+        int idAgenda = (int)request.getSession().getAttribute("idAgenda");
+        Cita cita = AgendaEjecutiva.getCita(new CitaPK(user, idAgenda, idCita));
         request.getSession().setAttribute("user", user);
         request.getSession().setAttribute("agenda", agenda);
         request.getSession().setAttribute("cita", cita);

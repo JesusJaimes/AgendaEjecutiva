@@ -5,6 +5,7 @@
     <class>Model.Agenda</class>
     <class>Model.Usuario</class>
     <class>Model.Cita</class>
+    <class>Model.AgendaCompartida</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/agendaEjecutiva"/>

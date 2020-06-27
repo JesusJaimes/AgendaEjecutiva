@@ -6,12 +6,12 @@
 package Control;
 
 import Model.Agenda;
-import Model.Cita;
-import Model.CitaPK;
+import Model.AgendaPK;
 import Model.Usuario;
 import Negocio.AgendaEjecutiva;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romario
  */
-public class EliminarCita extends HttpServlet {
+public class LeerFormularioEditarAgenda extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,21 +35,20 @@ public class EliminarCita extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String user = (String)request.getSession().getAttribute("user");
-        String agenda = (String)request.getSession().getAttribute("agenda");
-        int idAgenda = (int)request.getSession().getAttribute("idAgenda");
-        long idCita = Long.parseLong(request.getParameter("idcita"));
+         String user = (String)request.getSession().getAttribute("user");
         Usuario usuario = AgendaEjecutiva.getUsuario(user);
-        Cita cita = AgendaEjecutiva.getCita(new CitaPK(user, idAgenda, idCita));
-        if(AgendaEjecutiva.eliminarCita(cita.getCitaPK())){
-//            Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
+        AgendaPK agendaPK = new AgendaPK(user);
+        String descripcion = request.getParameter("descripcion");
+        Date fecha = new Date(System.currentTimeMillis());
+        Agenda agenda = new Agenda(agendaPK, descripcion, fecha, usuario);
+
+        if(AgendaEjecutiva.actualizarAgenda(agenda)){
+//            usuario.getAgendaList().add(agenda);
             request.getSession().setAttribute("user", user);
-            request.getSession().setAttribute("agenda", agenda);
-            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda));
-//            request.getSession().setAttribute("citas", agendaObj.listaCitasToHtmlFormat());
+            request.getSession().setAttribute("agenda", agenda.getNombre());
+            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda.getNombre()));
             response.sendRedirect("vistaPrincipal.jsp");
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

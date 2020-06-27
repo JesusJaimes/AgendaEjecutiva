@@ -15,39 +15,33 @@ import javax.persistence.Embeddable;
  * @author Romario
  */
 @Embeddable
-public class CitaPK implements Serializable {
+public class AgendaCompartidaPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "id")
-    private long id;
+    @Column(name = "owner")
+    private String owner;
     @Basic(optional = false)
     @Column(name = "agenda")
     private int agenda;
     @Basic(optional = false)
-    @Column(name = "usuario")
-    private String usuario;
+    @Column(name = "compartido")
+    private String compartido;
 
-    public CitaPK() {
+    public AgendaCompartidaPK() {
     }
 
-    public CitaPK(long id, int agenda, String usuario) {
-        this.id = id;
+    public AgendaCompartidaPK(String owner, int agenda, String compartido) {
+        this.owner = owner;
         this.agenda = agenda;
-        this.usuario = usuario;
+        this.compartido = compartido;
     }
 
-    public CitaPK(String user, int agenda, long idCita) {
-        this.id = id;
-        this.agenda = agenda;
-        this.usuario = usuario;
+    public String getOwner() {
+        return owner;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public int getAgenda() {
@@ -58,37 +52,37 @@ public class CitaPK implements Serializable {
         this.agenda = agenda;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getCompartido() {
+        return compartido;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setCompartido(String compartido) {
+        this.compartido = compartido;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) id;
+        hash += (owner != null ? owner.hashCode() : 0);
         hash += (int) agenda;
-        hash += (usuario != null ? usuario.hashCode() : 0);
+        hash += (compartido != null ? compartido.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CitaPK)) {
+        if (!(object instanceof AgendaCompartidaPK)) {
             return false;
         }
-        CitaPK other = (CitaPK) object;
-        if (this.id != other.id) {
+        AgendaCompartidaPK other = (AgendaCompartidaPK) object;
+        if ((this.owner == null && other.owner != null) || (this.owner != null && !this.owner.equals(other.owner))) {
             return false;
         }
         if (this.agenda != other.agenda) {
             return false;
         }
-        if ((this.usuario == null && other.usuario != null) || (this.usuario != null && !this.usuario.equals(other.usuario))) {
+        if ((this.compartido == null && other.compartido != null) || (this.compartido != null && !this.compartido.equals(other.compartido))) {
             return false;
         }
         return true;
@@ -96,7 +90,7 @@ public class CitaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "Model.CitaPK[ id=" + id + ", agenda=" + agenda + ", usuario=" + usuario + " ]";
+        return "Model.AgendaCompartidaPK[ owner=" + owner + ", agenda=" + agenda + ", compartido=" + compartido + " ]";
     }
     
 }

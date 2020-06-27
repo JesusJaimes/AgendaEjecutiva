@@ -17,9 +17,11 @@
     String user = (String)request.getSession().getAttribute("user");
     String agenda = (String)request.getSession().getAttribute("agenda");
     String agendas = (String)request.getSession().getAttribute("agendas");
+    int idAgenda = (int)request.getSession().getAttribute("idAgenda");
     request.getSession().setAttribute("user", user);
     request.getSession().setAttribute("agenda", agenda);
     request.getSession().setAttribute("agendas", agendas);
+    request.getSession().setAttribute("idAgenda", idAgenda);
     
     String minDate = "'"+AgendaEjecutiva.getFechaStringYearMonthDay()+"'";
     String minHour = "'"+AgendaEjecutiva.getTimeStringHourMinute()+"'";

@@ -61,7 +61,7 @@ public class Usuario implements Serializable {
     public Usuario(String email) {
         this.email = email;
     }
-
+    
     public Usuario(String nombre, String email, String password, String cargo, Date fechaRegistro) {
         this.nombre = nombre;
         this.email = email;
@@ -149,18 +149,18 @@ public class Usuario implements Serializable {
         String classStyle = "class='seleccionada'";
         if(!getAgendaList().isEmpty()){
             for(Agenda a:getAgendaList()){
-                if(agendaSelecionada.equals(a.getAgendaPK().getNombre())){
+                if(agendaSelecionada.equals(a.getNombre())){
                     agendas += "<li "+classStyle+">"
                     + "<form  action='ir_agenda_seleccionada.do' method='POST' >"
-                    + "<input type='text' name='agenda' style='display:none;' value='"+a.getAgendaPK().getNombre()+"' required/>"
-                    + "<button type='submit'name='selccionada'><i class='fas fa-book'></i><p>"+a.getAgendaPK().getNombre()+"</p></button>"
+                    + "<input type='text' name='agenda' style='display:none;' value='"+a.getNombre()+"' required/>"
+                    + "<button type='submit'name='selccionada'><i class='fas fa-book'></i><p>"+a.getNombre()+"</p></button>"
                     + "</form>"
                     + "</li>";
                 }else{
                     agendas += "<li class='agenda'>"
                     + "<form  action='ir_agenda_seleccionada.do' method='POST' >"
-                    + "<input type='text' name='agenda' style='display:none;' value='"+a.getAgendaPK().getNombre()+"' required/>"
-                    + "<button type='submit'name='selccionada'><i class='fas fa-book'></i><p>"+a.getAgendaPK().getNombre()+"</p></button>"
+                    + "<input type='text' name='agenda' style='display:none;' value='"+a.getNombre()+"' required/>"
+                    + "<button type='submit'name='selccionada'><i class='fas fa-book'></i><p>"+a.getNombre()+"</p></button>"
                     + "</form>"
                     + "</li>"; 
                 }

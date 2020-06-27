@@ -43,6 +43,7 @@ public class LeerFormularioCrearCita extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String user = (String)request.getSession().getAttribute("user");
         String agenda = (String)request.getSession().getAttribute("agenda");
+        int idAgenda = (int)request.getSession().getAttribute("idAgenda");
         String agendas = (String)request.getSession().getAttribute("agendas");
         String asunto = request.getParameter("asunto-cita");
         String fechaString = request.getParameter("fecha-cita");
@@ -50,12 +51,12 @@ public class LeerFormularioCrearCita extends HttpServlet {
         String horaFinalString = request.getParameter("hora-final");
         String anotacion = request.getParameter("anotacion");
         
-        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
+        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, idAgenda);
         Cita cita = crearCita(fechaString, horaString, asunto, anotacion, user, agendaObj, horaFinalString);
         
         if(AgendaEjecutiva.insertarCita(cita)){
             agendaObj.getCitaList().add(cita);
-            AgendaEjecutiva.actualizarAgenda(agendaObj, user, agenda);
+            AgendaEjecutiva.actualizarAgenda(agendaObj, user, idAgenda);
             request.getSession().setAttribute("user", user);
             request.getSession().setAttribute("agenda", agenda);
             request.getSession().setAttribute("agendas", agendas);
@@ -79,7 +80,7 @@ public class LeerFormularioCrearCita extends HttpServlet {
         Date horaFinal = AgendaEjecutiva.localTimeToDate(LocalTime.parse(horaFinalString));
         Date fechaCreacion = new Date(System.currentTimeMillis());
         
-        CitaPK citaPK = new CitaPK(user, agenda.getAgendaPK().getNombre(), crearIdCita());
+        CitaPK citaPK = new CitaPK(user, agenda.getAgendaPK().getId(), crearIdCita());
         Cita cita = new Cita(citaPK, asunto, anotacion, hora, fecha, false, fechaCreacion, horaFinal);
         return cita;
     }

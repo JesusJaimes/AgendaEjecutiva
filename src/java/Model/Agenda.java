@@ -33,20 +33,25 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Agenda.findAll", query = "SELECT a FROM Agenda a"),
-    @NamedQuery(name = "Agenda.findByNombre", query = "SELECT a FROM Agenda a WHERE a.agendaPK.nombre = :nombre"),
+    @NamedQuery(name = "Agenda.findByNombre", query = "SELECT a FROM Agenda a WHERE a.nombre = :nombre"),
     @NamedQuery(name = "Agenda.findByDescripcion", query = "SELECT a FROM Agenda a WHERE a.descripcion = :descripcion"),
     @NamedQuery(name = "Agenda.findByUsuario", query = "SELECT a FROM Agenda a WHERE a.agendaPK.usuario = :usuario"),
-    @NamedQuery(name = "Agenda.findByFecha", query = "SELECT a FROM Agenda a WHERE a.fecha = :fecha")})
+    @NamedQuery(name = "Agenda.findByFecha", query = "SELECT a FROM Agenda a WHERE a.fecha = :fecha"),
+    @NamedQuery(name = "Agenda.findById", query = "SELECT a FROM Agenda a WHERE a.agendaPK.id = :id")})
 public class Agenda implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected AgendaPK agendaPK;
+    @Column(name = "nombre")
+    private String nombre;
     @Column(name = "descripcion")
     private String descripcion;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "agenda")
+    private List<AgendaCompartida> agendaCompartidaList;
     @JoinColumn(name = "usuario", referencedColumnName = "email", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Usuario usuario;
@@ -60,8 +65,8 @@ public class Agenda implements Serializable {
         this.agendaPK = agendaPK;
     }
 
-    public Agenda(String nombre, String usuario) {
-        this.agendaPK = new AgendaPK(nombre, usuario);
+    public Agenda(String usuario, int id) {
+        this.agendaPK = new AgendaPK(usuario, id);
     }
 
     public Agenda(AgendaPK agendaPK, String descripcion, Date fecha, Usuario usuario) {
@@ -79,6 +84,14 @@ public class Agenda implements Serializable {
         this.agendaPK = agendaPK;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -93,6 +106,15 @@ public class Agenda implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    @XmlTransient
+    public List<AgendaCompartida> getAgendaCompartidaList() {
+        return agendaCompartidaList;
+    }
+
+    public void setAgendaCompartidaList(List<AgendaCompartida> agendaCompartidaList) {
+        this.agendaCompartidaList = agendaCompartidaList;
     }
 
     public Usuario getUsuario() {

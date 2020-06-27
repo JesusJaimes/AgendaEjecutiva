@@ -13,8 +13,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import Model.Agenda;
-import Model.Cita;
-import Model.CitaPK;
+import Model.AgendaCompartida;
+import Model.AgendaCompartidaPK;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -24,13 +24,13 @@ import javax.persistence.Persistence;
  *
  * @author Romario
  */
-public class CitaJpaController implements Serializable {
+public class AgendaCompartidaJpaController implements Serializable {
     
-    public CitaJpaController() {
+    public AgendaCompartidaJpaController() {
         this.emf=Persistence.createEntityManagerFactory("AgendaEjecutivaPU");
     }
 
-    public CitaJpaController(EntityManagerFactory emf) {
+    public AgendaCompartidaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -39,30 +39,30 @@ public class CitaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Cita cita) throws PreexistingEntityException, Exception {
-        if (cita.getCitaPK() == null) {
-            cita.setCitaPK(new CitaPK());
+    public void create(AgendaCompartida agendaCompartida) throws PreexistingEntityException, Exception {
+        if (agendaCompartida.getAgendaCompartidaPK() == null) {
+            agendaCompartida.setAgendaCompartidaPK(new AgendaCompartidaPK());
         }
-//        cita.getCitaPK().setAgenda(cita.getAgenda().getAgendaPK().getId());
-//        cita.getCitaPK().setUsuario(cita.getAgenda().getAgendaPK().getUsuario());
+        agendaCompartida.getAgendaCompartidaPK().setOwner(agendaCompartida.getAgenda().getAgendaPK().getUsuario());
+        agendaCompartida.getAgendaCompartidaPK().setAgenda(agendaCompartida.getAgenda().getAgendaPK().getId());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Agenda agenda = cita.getAgenda();
+            Agenda agenda = agendaCompartida.getAgenda();
             if (agenda != null) {
                 agenda = em.getReference(agenda.getClass(), agenda.getAgendaPK());
-                cita.setAgenda(agenda);
+                agendaCompartida.setAgenda(agenda);
             }
-            em.persist(cita);
+            em.persist(agendaCompartida);
             if (agenda != null) {
-                agenda.getCitaList().add(cita);
+                agenda.getAgendaCompartidaList().add(agendaCompartida);
                 agenda = em.merge(agenda);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findCita(cita.getCitaPK()) != null) {
-                throw new PreexistingEntityException("Cita " + cita + " already exists.", ex);
+            if (findAgendaCompartida(agendaCompartida.getAgendaCompartidaPK()) != null) {
+                throw new PreexistingEntityException("AgendaCompartida " + agendaCompartida + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -72,36 +72,36 @@ public class CitaJpaController implements Serializable {
         }
     }
 
-    public void edit(Cita cita) throws NonexistentEntityException, Exception {
-        cita.getCitaPK().setAgenda(cita.getAgenda().getAgendaPK().getId());
-        cita.getCitaPK().setUsuario(cita.getAgenda().getAgendaPK().getUsuario());
+    public void edit(AgendaCompartida agendaCompartida) throws NonexistentEntityException, Exception {
+        agendaCompartida.getAgendaCompartidaPK().setOwner(agendaCompartida.getAgenda().getAgendaPK().getUsuario());
+        agendaCompartida.getAgendaCompartidaPK().setAgenda(agendaCompartida.getAgenda().getAgendaPK().getId());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Cita persistentCita = em.find(Cita.class, cita.getCitaPK());
-            Agenda agendaOld = persistentCita.getAgenda();
-            Agenda agendaNew = cita.getAgenda();
+            AgendaCompartida persistentAgendaCompartida = em.find(AgendaCompartida.class, agendaCompartida.getAgendaCompartidaPK());
+            Agenda agendaOld = persistentAgendaCompartida.getAgenda();
+            Agenda agendaNew = agendaCompartida.getAgenda();
             if (agendaNew != null) {
                 agendaNew = em.getReference(agendaNew.getClass(), agendaNew.getAgendaPK());
-                cita.setAgenda(agendaNew);
+                agendaCompartida.setAgenda(agendaNew);
             }
-            cita = em.merge(cita);
+            agendaCompartida = em.merge(agendaCompartida);
             if (agendaOld != null && !agendaOld.equals(agendaNew)) {
-                agendaOld.getCitaList().remove(cita);
+                agendaOld.getAgendaCompartidaList().remove(agendaCompartida);
                 agendaOld = em.merge(agendaOld);
             }
             if (agendaNew != null && !agendaNew.equals(agendaOld)) {
-                agendaNew.getCitaList().add(cita);
+                agendaNew.getAgendaCompartidaList().add(agendaCompartida);
                 agendaNew = em.merge(agendaNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                CitaPK id = cita.getCitaPK();
-                if (findCita(id) == null) {
-                    throw new NonexistentEntityException("The cita with id " + id + " no longer exists.");
+                AgendaCompartidaPK id = agendaCompartida.getAgendaCompartidaPK();
+                if (findAgendaCompartida(id) == null) {
+                    throw new NonexistentEntityException("The agendaCompartida with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -112,24 +112,24 @@ public class CitaJpaController implements Serializable {
         }
     }
 
-    public void destroy(CitaPK id) throws NonexistentEntityException {
+    public void destroy(AgendaCompartidaPK id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Cita cita;
+            AgendaCompartida agendaCompartida;
             try {
-                cita = em.getReference(Cita.class, id);
-                cita.getCitaPK();
+                agendaCompartida = em.getReference(AgendaCompartida.class, id);
+                agendaCompartida.getAgendaCompartidaPK();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The cita with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The agendaCompartida with id " + id + " no longer exists.", enfe);
             }
-            Agenda agenda = cita.getAgenda();
+            Agenda agenda = agendaCompartida.getAgenda();
             if (agenda != null) {
-                agenda.getCitaList().remove(cita);
+                agenda.getAgendaCompartidaList().remove(agendaCompartida);
                 agenda = em.merge(agenda);
             }
-            em.remove(cita);
+            em.remove(agendaCompartida);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -138,19 +138,19 @@ public class CitaJpaController implements Serializable {
         }
     }
 
-    public List<Cita> findCitaEntities() {
-        return findCitaEntities(true, -1, -1);
+    public List<AgendaCompartida> findAgendaCompartidaEntities() {
+        return findAgendaCompartidaEntities(true, -1, -1);
     }
 
-    public List<Cita> findCitaEntities(int maxResults, int firstResult) {
-        return findCitaEntities(false, maxResults, firstResult);
+    public List<AgendaCompartida> findAgendaCompartidaEntities(int maxResults, int firstResult) {
+        return findAgendaCompartidaEntities(false, maxResults, firstResult);
     }
 
-    private List<Cita> findCitaEntities(boolean all, int maxResults, int firstResult) {
+    private List<AgendaCompartida> findAgendaCompartidaEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Cita.class));
+            cq.select(cq.from(AgendaCompartida.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -162,20 +162,20 @@ public class CitaJpaController implements Serializable {
         }
     }
 
-    public Cita findCita(CitaPK id) {
+    public AgendaCompartida findAgendaCompartida(AgendaCompartidaPK id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Cita.class, id);
+            return em.find(AgendaCompartida.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getCitaCount() {
+    public int getAgendaCompartidaCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Cita> rt = cq.from(Cita.class);
+            Root<AgendaCompartida> rt = cq.from(AgendaCompartida.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

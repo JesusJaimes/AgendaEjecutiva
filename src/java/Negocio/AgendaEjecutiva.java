@@ -82,11 +82,11 @@ public class AgendaEjecutiva {
         return agenda.getCitaList();
     }
     
-    public static Agenda getAgenda(String usuario, String agenda){
-        return agendaDAO.findAgenda(new AgendaPK(agenda, usuario));
+    public static Agenda getAgenda(String usuario, int agenda){
+        return agendaDAO.findAgenda(new AgendaPK(usuario, agenda));
     }
     
-    public static void actualizarAgenda(Agenda agendaObj, String usuario, String agenda){
+    public static void actualizarAgenda(Agenda agendaObj, String usuario, int agenda){
         try{
             Agenda agendaExistente = getAgenda(usuario, agenda);
             agendaExistente.setCitaList(agendaObj.getCitaList());
@@ -361,5 +361,17 @@ public class AgendaEjecutiva {
 
         String time = horaStr+":"+minutoStr;
         return time;
+    }
+    
+    public static boolean actualizarAgenda(Agenda agenda){
+         try{
+            Agenda agendaExistente = getAgenda(agenda.getAgendaPK().getUsuario(), agenda.getAgendaPK().getId());
+            agendaExistente.setDescripcion(agenda.getDescripcion());
+            agendaExistente.setNombre(agenda.getNombre());
+            agendaDAO.edit(agendaExistente);
+        }catch(Exception e){
+            return false;
+        }
+        return true;
     }
 }

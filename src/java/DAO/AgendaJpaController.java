@@ -9,16 +9,17 @@ import DAO.exceptions.IllegalOrphanException;
 import DAO.exceptions.NonexistentEntityException;
 import DAO.exceptions.PreexistingEntityException;
 import Model.Agenda;
-import Model.AgendaPK;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import Model.Usuario;
-import Model.Cita;
+import Model.AgendaCompartida;
+import Model.AgendaPK;
 import java.util.ArrayList;
 import java.util.List;
+import Model.Cita;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -46,6 +47,9 @@ public class AgendaJpaController implements Serializable {
         if (agenda.getAgendaPK() == null) {
             agenda.setAgendaPK(new AgendaPK());
         }
+        if (agenda.getAgendaCompartidaList() == null) {
+            agenda.setAgendaCompartidaList(new ArrayList<AgendaCompartida>());
+        }
         if (agenda.getCitaList() == null) {
             agenda.setCitaList(new ArrayList<Cita>());
         }
@@ -59,6 +63,12 @@ public class AgendaJpaController implements Serializable {
                 usuario = em.getReference(usuario.getClass(), usuario.getEmail());
                 agenda.setUsuario(usuario);
             }
+            List<AgendaCompartida> attachedAgendaCompartidaList = new ArrayList<AgendaCompartida>();
+            for (AgendaCompartida agendaCompartidaListAgendaCompartidaToAttach : agenda.getAgendaCompartidaList()) {
+                agendaCompartidaListAgendaCompartidaToAttach = em.getReference(agendaCompartidaListAgendaCompartidaToAttach.getClass(), agendaCompartidaListAgendaCompartidaToAttach.getAgendaCompartidaPK());
+                attachedAgendaCompartidaList.add(agendaCompartidaListAgendaCompartidaToAttach);
+            }
+            agenda.setAgendaCompartidaList(attachedAgendaCompartidaList);
             List<Cita> attachedCitaList = new ArrayList<Cita>();
             for (Cita citaListCitaToAttach : agenda.getCitaList()) {
                 citaListCitaToAttach = em.getReference(citaListCitaToAttach.getClass(), citaListCitaToAttach.getCitaPK());
@@ -69,6 +79,15 @@ public class AgendaJpaController implements Serializable {
             if (usuario != null) {
                 usuario.getAgendaList().add(agenda);
                 usuario = em.merge(usuario);
+            }
+            for (AgendaCompartida agendaCompartidaListAgendaCompartida : agenda.getAgendaCompartidaList()) {
+                Agenda oldAgendaOfAgendaCompartidaListAgendaCompartida = agendaCompartidaListAgendaCompartida.getAgenda();
+                agendaCompartidaListAgendaCompartida.setAgenda(agenda);
+                agendaCompartidaListAgendaCompartida = em.merge(agendaCompartidaListAgendaCompartida);
+                if (oldAgendaOfAgendaCompartidaListAgendaCompartida != null) {
+                    oldAgendaOfAgendaCompartidaListAgendaCompartida.getAgendaCompartidaList().remove(agendaCompartidaListAgendaCompartida);
+                    oldAgendaOfAgendaCompartidaListAgendaCompartida = em.merge(oldAgendaOfAgendaCompartidaListAgendaCompartida);
+                }
             }
             for (Cita citaListCita : agenda.getCitaList()) {
                 Agenda oldAgendaOfCitaListCita = citaListCita.getAgenda();
@@ -101,9 +120,19 @@ public class AgendaJpaController implements Serializable {
             Agenda persistentAgenda = em.find(Agenda.class, agenda.getAgendaPK());
             Usuario usuarioOld = persistentAgenda.getUsuario();
             Usuario usuarioNew = agenda.getUsuario();
+            List<AgendaCompartida> agendaCompartidaListOld = persistentAgenda.getAgendaCompartidaList();
+            List<AgendaCompartida> agendaCompartidaListNew = agenda.getAgendaCompartidaList();
             List<Cita> citaListOld = persistentAgenda.getCitaList();
             List<Cita> citaListNew = agenda.getCitaList();
             List<String> illegalOrphanMessages = null;
+            for (AgendaCompartida agendaCompartidaListOldAgendaCompartida : agendaCompartidaListOld) {
+                if (!agendaCompartidaListNew.contains(agendaCompartidaListOldAgendaCompartida)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain AgendaCompartida " + agendaCompartidaListOldAgendaCompartida + " since its agenda field is not nullable.");
+                }
+            }
             for (Cita citaListOldCita : citaListOld) {
                 if (!citaListNew.contains(citaListOldCita)) {
                     if (illegalOrphanMessages == null) {
@@ -119,6 +148,13 @@ public class AgendaJpaController implements Serializable {
                 usuarioNew = em.getReference(usuarioNew.getClass(), usuarioNew.getEmail());
                 agenda.setUsuario(usuarioNew);
             }
+            List<AgendaCompartida> attachedAgendaCompartidaListNew = new ArrayList<AgendaCompartida>();
+            for (AgendaCompartida agendaCompartidaListNewAgendaCompartidaToAttach : agendaCompartidaListNew) {
+                agendaCompartidaListNewAgendaCompartidaToAttach = em.getReference(agendaCompartidaListNewAgendaCompartidaToAttach.getClass(), agendaCompartidaListNewAgendaCompartidaToAttach.getAgendaCompartidaPK());
+                attachedAgendaCompartidaListNew.add(agendaCompartidaListNewAgendaCompartidaToAttach);
+            }
+            agendaCompartidaListNew = attachedAgendaCompartidaListNew;
+            agenda.setAgendaCompartidaList(agendaCompartidaListNew);
             List<Cita> attachedCitaListNew = new ArrayList<Cita>();
             for (Cita citaListNewCitaToAttach : citaListNew) {
                 citaListNewCitaToAttach = em.getReference(citaListNewCitaToAttach.getClass(), citaListNewCitaToAttach.getCitaPK());
@@ -134,6 +170,17 @@ public class AgendaJpaController implements Serializable {
             if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
                 usuarioNew.getAgendaList().add(agenda);
                 usuarioNew = em.merge(usuarioNew);
+            }
+            for (AgendaCompartida agendaCompartidaListNewAgendaCompartida : agendaCompartidaListNew) {
+                if (!agendaCompartidaListOld.contains(agendaCompartidaListNewAgendaCompartida)) {
+                    Agenda oldAgendaOfAgendaCompartidaListNewAgendaCompartida = agendaCompartidaListNewAgendaCompartida.getAgenda();
+                    agendaCompartidaListNewAgendaCompartida.setAgenda(agenda);
+                    agendaCompartidaListNewAgendaCompartida = em.merge(agendaCompartidaListNewAgendaCompartida);
+                    if (oldAgendaOfAgendaCompartidaListNewAgendaCompartida != null && !oldAgendaOfAgendaCompartidaListNewAgendaCompartida.equals(agenda)) {
+                        oldAgendaOfAgendaCompartidaListNewAgendaCompartida.getAgendaCompartidaList().remove(agendaCompartidaListNewAgendaCompartida);
+                        oldAgendaOfAgendaCompartidaListNewAgendaCompartida = em.merge(oldAgendaOfAgendaCompartidaListNewAgendaCompartida);
+                    }
+                }
             }
             for (Cita citaListNewCita : citaListNew) {
                 if (!citaListOld.contains(citaListNewCita)) {
@@ -176,6 +223,13 @@ public class AgendaJpaController implements Serializable {
                 throw new NonexistentEntityException("The agenda with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
+            List<AgendaCompartida> agendaCompartidaListOrphanCheck = agenda.getAgendaCompartidaList();
+            for (AgendaCompartida agendaCompartidaListOrphanCheckAgendaCompartida : agendaCompartidaListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Agenda (" + agenda + ") cannot be destroyed since the AgendaCompartida " + agendaCompartidaListOrphanCheckAgendaCompartida + " in its agendaCompartidaList field has a non-nullable agenda field.");
+            }
             List<Cita> citaListOrphanCheck = agenda.getCitaList();
             for (Cita citaListOrphanCheckCita : citaListOrphanCheck) {
                 if (illegalOrphanMessages == null) {

@@ -39,8 +39,9 @@ public class LeerFormularioGenerarReporte extends HttpServlet {
         String user = (String)request.getSession().getAttribute("user");
         String agenda = (String)request.getSession().getAttribute("agenda");
         String agendas = (String)request.getSession().getAttribute("agendas");
+        String idAgenda = (String)request.getSession().getAttribute("idAgenda");
         
-        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
+        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, Integer.parseInt(idAgenda));
         
         String fechaDesdeString = request.getParameter("fecha-desde");
         String fechaHastaString = request.getParameter("fecha-hasta");

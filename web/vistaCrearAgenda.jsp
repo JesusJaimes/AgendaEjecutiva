@@ -79,7 +79,7 @@
             </div>
             
             <div class="card">
-                <h2 style="font-weight: bolder;">Ingrese los datos la Agenda</h2>
+                <h2 style="font-weight: bolder;">Ingrese los datos de la Agenda</h2>
                 <form  id='form-registrar-agenda' action='leer_formulario_crear_agenda.do' method='POST'>
                 <label>Nombre</label>
                 <input type='text' name='nombre' placeholder='Nombre' required/>

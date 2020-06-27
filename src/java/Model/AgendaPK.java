@@ -18,26 +18,21 @@ import javax.persistence.Embeddable;
 public class AgendaPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "nombre")
-    private String nombre;
-    @Basic(optional = false)
     @Column(name = "usuario")
     private String usuario;
+    @Basic(optional = false)
+    @Column(name = "id")
+    private int id;
 
     public AgendaPK() {
     }
 
-    public AgendaPK(String nombre, String usuario) {
-        this.nombre = nombre;
+    public AgendaPK(String usuario, int id) {
         this.usuario = usuario;
+        this.id = id;
     }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public AgendaPK(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getUsuario() {
@@ -48,11 +43,19 @@ public class AgendaPK implements Serializable {
         this.usuario = usuario;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (nombre != null ? nombre.hashCode() : 0);
         hash += (usuario != null ? usuario.hashCode() : 0);
+        hash += (int) id;
         return hash;
     }
 
@@ -63,10 +66,10 @@ public class AgendaPK implements Serializable {
             return false;
         }
         AgendaPK other = (AgendaPK) object;
-        if ((this.nombre == null && other.nombre != null) || (this.nombre != null && !this.nombre.equals(other.nombre))) {
+        if ((this.usuario == null && other.usuario != null) || (this.usuario != null && !this.usuario.equals(other.usuario))) {
             return false;
         }
-        if ((this.usuario == null && other.usuario != null) || (this.usuario != null && !this.usuario.equals(other.usuario))) {
+        if (this.id != other.id) {
             return false;
         }
         return true;
@@ -74,7 +77,7 @@ public class AgendaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "Model.AgendaPK[ nombre=" + nombre + ", usuario=" + usuario + " ]";
+        return "Model.AgendaPK[ usuario=" + usuario + ", id=" + id + " ]";
     }
     
 }
