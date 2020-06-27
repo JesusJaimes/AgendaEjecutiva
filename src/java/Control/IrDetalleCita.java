@@ -36,11 +36,10 @@ public class IrDetalleCita extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String user = (String)request.getSession().getAttribute("user");
-        String agenda = (String)request.getSession().getAttribute("agenda");
+        int agenda = (int)request.getSession().getAttribute("agenda");
         long idCita = Long.parseLong(request.getParameter("idcita"));
         Usuario usuario = AgendaEjecutiva.getUsuario(user);
-        int idAgenda = (int)request.getSession().getAttribute("idAgenda");
-        Cita cita = AgendaEjecutiva.getCita(new CitaPK(user, idAgenda, idCita));
+        Cita cita = AgendaEjecutiva.getCita(new CitaPK(user, agenda, idCita));
         request.getSession().setAttribute("user", user);
         request.getSession().setAttribute("agenda", agenda);
         request.getSession().setAttribute("cita", cita);

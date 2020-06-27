@@ -37,9 +37,9 @@ public class CitaPK implements Serializable {
     }
 
     public CitaPK(String user, int agenda, long idCita) {
-        this.id = id;
+        this.id = idCita;
         this.agenda = agenda;
-        this.usuario = usuario;
+        this.usuario = user;
     }
 
     public long getId() {

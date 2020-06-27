@@ -35,10 +35,9 @@ public class IrVistaEditarAgenda extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String user = (String)request.getSession().getAttribute("user");
-        String agenda = (String)request.getSession().getAttribute("agenda");
+        int agenda = (int)request.getSession().getAttribute("agenda");
         String agendas = (String)request.getSession().getAttribute("agendas");
-        String idAgenda = (String)request.getSession().getAttribute("idAgenda");
-        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, Integer.parseInt(idAgenda));
+        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
         
         request.getSession().setAttribute("user", user);
         request.getSession().setAttribute("agenda", agenda);

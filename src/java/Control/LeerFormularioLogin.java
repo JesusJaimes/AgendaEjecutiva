@@ -42,13 +42,14 @@ public class LeerFormularioLogin extends HttpServlet {
         String user = request.getParameter("user");
         String password = request.getParameter("password");
         Usuario usuario = AgendaEjecutiva.getUsuario(user);
-        Agenda agenda = usuario.getAgendaList().get(0);
+        
         
         if(usuario!=null && AgendaEjecutiva.validarUsuario(user, password)){
+            
+            Agenda agenda = usuario.getAgendaList().get(0);
             request.getSession().setAttribute("user", user);
-            request.getSession().setAttribute("agenda", agenda.getNombre());
-            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda.getNombre()));
-            request.getSession().setAttribute("idAgenda", agenda.getAgendaPK().getId());
+            request.getSession().setAttribute("agenda", agenda.getAgendaPK().getId());
+            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda.getAgendaPK().getId()));
             response.sendRedirect("vistaPrincipal.jsp");
         }else{
             response.sendRedirect("index.html");

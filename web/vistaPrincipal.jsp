@@ -19,10 +19,9 @@
 
 <%
     String user = (String)request.getSession().getAttribute("user");
-    String agenda = (String)request.getSession().getAttribute("agenda");
+    int agenda = (int)request.getSession().getAttribute("agenda");
     String agendas = (String)request.getSession().getAttribute("agendas");
-    int idAgenda = (int)request.getSession().getAttribute("idAgenda");
-    Agenda agendaObj = AgendaEjecutiva.getAgenda(user, idAgenda);
+    Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
     String[] citasArray = agendaObj.listaCitasToHtmlFormat();
     String citas = citasArray[0];
     String citasRealizadas = citasArray[1];
@@ -32,7 +31,6 @@
     request.getSession().setAttribute("user", user);
     request.getSession().setAttribute("agenda", agenda);
     request.getSession().setAttribute("agendas", agendas);
-    request.getSession().setAttribute("idAgenda", idAgenda);
     
 %>
 
@@ -113,7 +111,7 @@
                     </div>
 
                     <div class="floating-option">
-                        <a href="#" id="button-eliminar" class="floating-button">
+                        <a href="eliminar_agenda.do" id="button-eliminar" class="floating-button">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                         <span class="fab-label">Eliminar esta agenda</span>

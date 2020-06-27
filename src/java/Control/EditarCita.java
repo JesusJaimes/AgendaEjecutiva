@@ -38,18 +38,20 @@ public class EditarCita extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String user = (String)request.getSession().getAttribute("user");
-        String agenda = (String)request.getSession().getAttribute("agenda");
+        int agenda = (int)request.getSession().getAttribute("agenda");
         Cita cita = (Cita)request.getSession().getAttribute("cita");
         Usuario usuario = AgendaEjecutiva.getUsuario(user);
         
         String asunto = request.getParameter("asunto-cita");
         String fechaString = request.getParameter("fecha-cita");
         String horaString = request.getParameter("hora-cita");
+        String horaFinalString = request.getParameter("hora-final");
         String anotacion = request.getParameter("anotacion");
         
         cita.setAsunto(asunto);
         cita.setFecha(AgendaEjecutiva.localDateToDate(LocalDate.parse(fechaString)));
         cita.setHora(AgendaEjecutiva.localTimeToDate(LocalTime.parse(horaString)));
+        cita.setHoraFinal(AgendaEjecutiva.localTimeToDate(LocalTime.parse(horaFinalString)));
         cita.setDescripcion(anotacion);
         
         if(AgendaEjecutiva.actualizarCita(cita, cita.getCitaPK())){

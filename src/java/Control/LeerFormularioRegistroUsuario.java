@@ -12,6 +12,8 @@ import Model.Usuario;
 import Negocio.AgendaEjecutiva;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -46,7 +48,8 @@ public class LeerFormularioRegistroUsuario extends HttpServlet {
         AgendaPK agendaPK = new AgendaPK(email);
         String descripcion = "Agenda generada automaticamente";
         Date fecha = new Date(System.currentTimeMillis());
-        Agenda agenda = new Agenda(agendaPK, descripcion, fecha, usuario);
+        int id = crearIdAgenda();
+        Agenda agenda = new Agenda("Mi agenda", descripcion, fecha, usuario, id);
 
         if(!email.endsWith("@ufps.edu.co")){
             response.sendRedirect("vistaCreacionUsuarioCorreoInvalido.jsp");
@@ -55,6 +58,14 @@ public class LeerFormularioRegistroUsuario extends HttpServlet {
         }else{
             request.getRequestDispatcher("registroError.html").forward(request, response);
         }
+    }
+    
+     public int crearIdAgenda(){
+        if(AgendaEjecutiva.getAgendas().isEmpty()){
+            return 0;
+        }else{
+            return (AgendaEjecutiva.getAgendas().get((AgendaEjecutiva.getAgendas().size())-1).getAgendaPK().getId())+1;
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

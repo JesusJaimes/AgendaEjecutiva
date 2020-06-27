@@ -144,22 +144,22 @@ public class Usuario implements Serializable {
         return "Model.Usuario[ email=" + email + " ]";
     }
     
-    public String agendasToHtmlFormat(String agendaSelecionada){
+    public String agendasToHtmlFormat(int agendaSelecionada){
         String agendas="";
         String classStyle = "class='seleccionada'";
         if(!getAgendaList().isEmpty()){
             for(Agenda a:getAgendaList()){
-                if(agendaSelecionada.equals(a.getNombre())){
+                if(agendaSelecionada==a.getAgendaPK().getId()){
                     agendas += "<li "+classStyle+">"
                     + "<form  action='ir_agenda_seleccionada.do' method='POST' >"
-                    + "<input type='text' name='agenda' style='display:none;' value='"+a.getNombre()+"' required/>"
+                    + "<input type='text' name='agenda' style='display:none;' value='"+a.getAgendaPK().getId()+"' required/>"
                     + "<button type='submit'name='selccionada'><i class='fas fa-book'></i><p>"+a.getNombre()+"</p></button>"
                     + "</form>"
                     + "</li>";
                 }else{
                     agendas += "<li class='agenda'>"
                     + "<form  action='ir_agenda_seleccionada.do' method='POST' >"
-                    + "<input type='text' name='agenda' style='display:none;' value='"+a.getNombre()+"' required/>"
+                    + "<input type='text' name='agenda' style='display:none;' value='"+a.getAgendaPK().getId()+"' required/>"
                     + "<button type='submit'name='selccionada'><i class='fas fa-book'></i><p>"+a.getNombre()+"</p></button>"
                     + "</form>"
                     + "</li>"; 

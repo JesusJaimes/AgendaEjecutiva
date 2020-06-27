@@ -10,14 +10,14 @@
 
 <%
     String user = (String)request.getSession().getAttribute("user");
-    String agenda = (String)request.getSession().getAttribute("agenda");
+    int agenda = (int)request.getSession().getAttribute("agenda");
     String agendas = (String)request.getSession().getAttribute("agendas");
     Agenda agendaObj = (Agenda)request.getSession().getAttribute("agendaObj");
     request.getSession().setAttribute("user", user);
     request.getSession().setAttribute("agenda", agenda);
     request.getSession().setAttribute("agendas", agendas);
     
-    String nombre = agendaObj.getAgendaPK().getNombre();
+    String nombre = agendaObj.getNombre();
     String descripcion = agendaObj.getDescripcion();
     
 %>

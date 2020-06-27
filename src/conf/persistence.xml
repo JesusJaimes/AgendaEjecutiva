@@ -8,10 +8,10 @@
     <class>Model.AgendaCompartida</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/agendaEjecutiva"/>
-      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-165-36-134.compute-1.amazonaws.com:5432/d3chbngshkvbk2"/>
+      <property name="javax.persistence.jdbc.user" value="hogviiutxomqdf"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="sushi"/>
+      <property name="javax.persistence.jdbc.password" value="e9392088be25d1cbfecdbff3a1f20f8dde79eeefac7e2e7a88865bf65ba6974f"/>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>

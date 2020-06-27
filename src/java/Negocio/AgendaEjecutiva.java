@@ -8,6 +8,7 @@ package Negocio;
 import DAO.AgendaJpaController;
 import DAO.CitaJpaController;
 import DAO.UsuarioJpaController;
+import DAO.exceptions.IllegalOrphanException;
 import DAO.exceptions.NonexistentEntityException;
 import Model.Agenda;
 import Model.AgendaPK;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -37,6 +40,11 @@ public class AgendaEjecutiva {
     static AgendaJpaController agendaDAO = new AgendaJpaController();
     
     public AgendaEjecutiva(){
+    }
+    
+    public static List<Agenda> getAgendas(){
+        
+        return agendaDAO.findAgendaEntities();
     }
     
     public static Usuario getUsuario(String usuario){
@@ -225,12 +233,28 @@ public class AgendaEjecutiva {
         }
     }
     
+    public static boolean eliminarAgenda(Agenda agenda) {
+        try{
+            if(!agenda.getCitaList().isEmpty()){
+                for(Cita c: agenda.getCitaList()){
+                    citaDAO.destroy(c.getCitaPK());
+                }
+            }
+            agendaDAO.destroy(agenda.getAgendaPK());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    
     public static boolean actualizarCita(Cita cita, CitaPK citaId){
         try{
             Cita citaExistente = getCita(citaId);
             citaExistente.setAsunto(cita.getAsunto());
             citaExistente.setFecha(cita.getFecha());
             citaExistente.setHora(cita.getHora());
+            citaExistente.setHoraFinal(cita.getHoraFinal());
             citaExistente.setDescripcion(cita.getDescripcion());
             citaDAO.edit(citaExistente);
         }catch(Exception e){
@@ -291,7 +315,7 @@ public class AgendaEjecutiva {
                 report.add(new ReportEntry("Se creó", c.getFechaCreacion(), c.getAsunto(), fechaCita, formatDateToStringHour(c.getHora()), formatDateToStringHour(c.getHoraFinal())));
             }
             
-            if(fechaEnRango(c.getFecha(), fechaDesde, fechaHasta)){
+            if(fechaEnRango(c.getFecha(), fechaDesde, fechaHasta) && c.getCompletada()){
                 SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
                 String fechaCita = DATE_FORMAT.format(c.getFecha());
                 report.add(new ReportEntry("Se realizó", c.getFecha(), c.getAsunto(), fechaCita, formatDateToStringHour(c.getHora()), formatDateToStringHour(c.getHoraFinal())));
@@ -342,7 +366,15 @@ public class AgendaEjecutiva {
     
     
     public static boolean fechaEnRango(Date testDate, Date startDate, Date endDate){
-        return !(testDate.before(startDate) || testDate.after(endDate));
+        LocalDate fechaInicio = dateToLocalDate(startDate);
+        LocalDate fechaFinal = dateToLocalDate(endDate);
+        LocalDate fecha = dateToLocalDate(testDate);
+        if(fechaInicio.minusDays(1).isBefore(fecha) && fechaFinal.plusDays(1).isAfter(fecha)){
+            return true;
+        }
+//        return !(testDate.before(startDate) || testDate.after(endDate));
+        return false;
+        
     }
     
     public static String formatDateToStringHour(Date hora){
@@ -369,9 +401,48 @@ public class AgendaEjecutiva {
             agendaExistente.setDescripcion(agenda.getDescripcion());
             agendaExistente.setNombre(agenda.getNombre());
             agendaDAO.edit(agendaExistente);
+            
         }catch(Exception e){
             return false;
         }
         return true;
+    }
+    
+    public static boolean exiteAgendaNombre(String nombre, Usuario usuario){
+        for(Agenda a: usuario.getAgendaList()){
+            if(a.getNombre().equals(nombre)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static boolean exiteCitaHora(Date hotaIni, Date horaFin, Agenda agenda){
+        if(agenda.getAgendaCompartidaList().isEmpty()){
+            return false;
+        }else{
+            for(Cita c: agenda.getCitaList()){
+                if(horaEnRango(hotaIni, horaFin, c)){
+                   return true; 
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    public static boolean horaEnRango(Date hotaIni, Date horaFin, Cita cita){
+        LocalTime ini = dateToLocalTime(hotaIni);
+        LocalTime fin = dateToLocalTime(horaFin);
+        LocalTime citaIni = dateToLocalTime(cita.getHora());
+        LocalTime citaFin = dateToLocalTime(cita.getHoraFinal());
+        
+        if(((citaIni.isAfter(ini) || citaIni.compareTo(ini)==0) && (citaIni.isBefore(fin) || citaIni.compareTo(fin)==0)) || 
+               ((citaFin.isAfter(ini) || citaFin.compareTo(ini)==0) && (citaFin.isBefore(fin) || citaFin.compareTo(fin)==0)) ){
+            return true;
+            
+        }
+        
+        return false;
     }
 }

@@ -42,8 +42,7 @@ public class LeerFormularioCrearCita extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String user = (String)request.getSession().getAttribute("user");
-        String agenda = (String)request.getSession().getAttribute("agenda");
-        int idAgenda = (int)request.getSession().getAttribute("idAgenda");
+        int agenda = (int)request.getSession().getAttribute("agenda");
         String agendas = (String)request.getSession().getAttribute("agendas");
         String asunto = request.getParameter("asunto-cita");
         String fechaString = request.getParameter("fecha-cita");
@@ -51,12 +50,15 @@ public class LeerFormularioCrearCita extends HttpServlet {
         String horaFinalString = request.getParameter("hora-final");
         String anotacion = request.getParameter("anotacion");
         
-        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, idAgenda);
+        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
         Cita cita = crearCita(fechaString, horaString, asunto, anotacion, user, agendaObj, horaFinalString);
+        if(AgendaEjecutiva.exiteCitaHora(cita.getHora(), cita.getHoraFinal(), agendaObj)){
+            response.sendRedirect("vistaRegistroCita.jsp");
+        }
         
         if(AgendaEjecutiva.insertarCita(cita)){
             agendaObj.getCitaList().add(cita);
-            AgendaEjecutiva.actualizarAgenda(agendaObj, user, idAgenda);
+            AgendaEjecutiva.actualizarAgenda(agendaObj, user, agenda);
             request.getSession().setAttribute("user", user);
             request.getSession().setAttribute("agenda", agenda);
             request.getSession().setAttribute("agendas", agendas);

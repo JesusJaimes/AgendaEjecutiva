@@ -60,6 +60,10 @@
         <servlet-name>LeerFormularioEditarAgenda</servlet-name>
         <servlet-class>Control.LeerFormularioEditarAgenda</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EliminarAgenda</servlet-name>
+        <servlet-class>Control.EliminarAgenda</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LeerFormularioLogin</servlet-name>
         <url-pattern>/leer_formulario_login.do</url-pattern>
@@ -119,6 +123,10 @@
     <servlet-mapping>
         <servlet-name>LeerFormularioEditarAgenda</servlet-name>
         <url-pattern>/leer_formulario_editar_agenda.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminarAgenda</servlet-name>
+        <url-pattern>/eliminar_agenda.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

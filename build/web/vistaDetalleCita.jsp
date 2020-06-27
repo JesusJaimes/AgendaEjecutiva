@@ -15,7 +15,7 @@
 
 <%
     String user = (String)request.getSession().getAttribute("user");
-    String agenda = (String)request.getSession().getAttribute("agenda");
+    int agenda = (int)request.getSession().getAttribute("agenda");
     String agendas = (String)request.getSession().getAttribute("agendas");
     Cita cita = (Cita)request.getSession().getAttribute("cita");
     request.getSession().setAttribute("user", user);

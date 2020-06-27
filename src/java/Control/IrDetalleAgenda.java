@@ -34,7 +34,7 @@ public class IrDetalleAgenda extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String user = (String)request.getSession().getAttribute("user");
-        String agenda = (String)request.getSession().getAttribute("agenda");
+        int agenda = (int)request.getSession().getAttribute("agenda");
         long idCita = Long.parseLong(request.getParameter("idcita"));
         Usuario usuario = AgendaEjecutiva.getUsuario(user);
         request.getSession().setAttribute("user", user);

@@ -69,8 +69,9 @@ public class Agenda implements Serializable {
         this.agendaPK = new AgendaPK(usuario, id);
     }
 
-    public Agenda(AgendaPK agendaPK, String descripcion, Date fecha, Usuario usuario) {
-        this.agendaPK = agendaPK;
+    public Agenda(String nombre, String descripcion, Date fecha, Usuario usuario, int id) {
+        this.agendaPK = new AgendaPK(usuario.getEmail(), id);
+        this.nombre = nombre;
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.usuario = usuario;

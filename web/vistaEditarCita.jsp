@@ -19,7 +19,7 @@
 <!DOCTYPE html>
 <%
     String user = (String)request.getSession().getAttribute("user");
-    String agenda = (String)request.getSession().getAttribute("agenda");
+    int agenda = (int)request.getSession().getAttribute("agenda");
     String agendas = (String)request.getSession().getAttribute("agendas");
     Cita cita = (Cita)request.getSession().getAttribute("cita");
     request.getSession().setAttribute("user", user);
@@ -30,20 +30,9 @@
     
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     String date = DATE_FORMAT.format(cita.getFecha());
-    
-    Instant instant = Instant.ofEpochMilli(cita.getHora().getTime());
-    LocalTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
-    String horaStr = ""+res.getHour();
-    String minutoStr = ""+res.getMinute();
-    if(horaStr.length()==1){
-        horaStr = "0"+horaStr;
-    }
-    if(minutoStr.length()==1){
-        minutoStr = "0"+minutoStr;
-    }
 
-    String time = horaStr+":"+minutoStr;
-    
+    String time = AgendaEjecutiva.formatDateToStringHour(cita.getHora()) ;
+    String timeFinal = AgendaEjecutiva.formatDateToStringHour(cita.getHoraFinal()) ;
     String descripcion = cita.getDescripcion();
 %>
 
@@ -105,11 +94,18 @@
             <div class="card">
                 <h2 style="font-weight: bolder;">Modifique los datos la cita</h2>
                 <form  id='form-registrar-cita' action='editar_cita.do' method='POST'>
-                
-                    <input type='text' name='asunto-cita' placeholder='Asunto' value='<%=asunto%>' required/>
-                    <input type='date' name='fecha-cita' placeholder='Fecha de Fertilizante' value='<%=date%>'  required/>
-                    <input type='time' name='hora-cita' placeholder='Hora' value='<%=time%>' required/>
+                    
+                    <label>Asunto</label>
+                    <input type='text' name='asunto-cita' placeholder='Asunto' required/>
+                    <label>Fecha de cita</label>
+                    <input type='date' name='fecha-cita' placeholder=''  value='<%=date%>' required/>
+                    <label>Hora de inicio</label>
+                    <input type='time' name='hora-cita' placeholder='Hora de inicio' value='<%=time%>' required/>
+                    <label>Hora de terminacion</label>
+                    <input type='time' name='hora-final' placeholder='Hora de terminacion' value='<%=timeFinal%>' required/>
+                    <label>Informacion adicional</label>
                     <textarea name='anotacion' rows='4' cols='50' placeholder='Informacion adicional'><%=descripcion%></textarea>
+                
                     <button type='submit' id="button-registrar">Editar</button>
                 </form>
             </div>

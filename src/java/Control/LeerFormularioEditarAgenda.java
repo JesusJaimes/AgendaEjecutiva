@@ -35,18 +35,21 @@ public class LeerFormularioEditarAgenda extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-         String user = (String)request.getSession().getAttribute("user");
+        String user = (String)request.getSession().getAttribute("user");
         Usuario usuario = AgendaEjecutiva.getUsuario(user);
-        AgendaPK agendaPK = new AgendaPK(user);
+        int agenda = (int)request.getSession().getAttribute("agenda");
+        String nombre = request.getParameter("nombre");
         String descripcion = request.getParameter("descripcion");
-        Date fecha = new Date(System.currentTimeMillis());
-        Agenda agenda = new Agenda(agendaPK, descripcion, fecha, usuario);
+        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
+        agendaObj.setDescripcion(descripcion);
+        agendaObj.setNombre(nombre);
+        
 
-        if(AgendaEjecutiva.actualizarAgenda(agenda)){
+        if(AgendaEjecutiva.actualizarAgenda(agendaObj)){
 //            usuario.getAgendaList().add(agenda);
             request.getSession().setAttribute("user", user);
-            request.getSession().setAttribute("agenda", agenda.getNombre());
-            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda.getNombre()));
+            request.getSession().setAttribute("agenda", agendaObj.getAgendaPK().getId());
+            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agendaObj.getAgendaPK().getId()));
             response.sendRedirect("vistaPrincipal.jsp");
         }
     }

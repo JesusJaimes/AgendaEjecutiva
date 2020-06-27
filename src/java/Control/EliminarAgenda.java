@@ -1,23 +1,17 @@
-package Control;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package Control;
 
 import Model.Agenda;
 import Model.Cita;
+import Model.CitaPK;
 import Model.Usuario;
 import Negocio.AgendaEjecutiva;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Romario
  */
-public class IrAgendaSeleccionada extends HttpServlet {
+public class EliminarAgenda extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,20 +36,22 @@ public class IrAgendaSeleccionada extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String user = (String)request.getSession().getAttribute("user");
-        int agenda = Integer.parseInt(request.getParameter("agenda"));
+        int agenda = (int)request.getSession().getAttribute("agenda");
         Usuario usuario = AgendaEjecutiva.getUsuario(user);
-//        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
-        request.getSession().setAttribute("user", user);
-        request.getSession().setAttribute("agenda", agenda);
-        request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda));
-//        request.getSession().setAttribute("citas", agendaObj.listaCitasToHtmlFormat());
-        request.getRequestDispatcher("vistaPrincipal.jsp");
-        response.sendRedirect("vistaPrincipal.jsp");
+        Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
+        if(usuario.getAgendaList().size()>1 && AgendaEjecutiva.eliminarAgenda(agendaObj)){
+//            Agenda agendaObj = AgendaEjecutiva.getAgenda(user, agenda);
+            usuario.getAgendaList().remove(agendaObj);
+            AgendaEjecutiva.actualizarUsuario(usuario);
+            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("agenda", usuario.getAgendaList().get(0).getAgendaPK().getId());
+            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(usuario.getAgendaList().get(0).getAgendaPK().getId()));
+//            request.getSession().setAttribute("citas", agendaObj.listaCitasToHtmlFormat());
+            response.sendRedirect("vistaPrincipal.jsp");
+        }else{
+            response.sendRedirect("vistaPrincipal.jsp");
+        }
     }
-    
-    
-    
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

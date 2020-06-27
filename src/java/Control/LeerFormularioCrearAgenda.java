@@ -12,6 +12,8 @@ import Model.Usuario;
 import Negocio.AgendaEjecutiva;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -37,19 +39,32 @@ public class LeerFormularioCrearAgenda extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String user = (String)request.getSession().getAttribute("user");
+        String nombre = request.getParameter("nombre");
         Usuario usuario = AgendaEjecutiva.getUsuario(user);
         AgendaPK agendaPK = new AgendaPK(user);
         String descripcion = request.getParameter("descripcion");
         Date fecha = new Date(System.currentTimeMillis());
-        Agenda agenda = new Agenda(agendaPK, descripcion, fecha, usuario);
-
-        if(AgendaEjecutiva.insertarAgenda(agenda)){
+        int id = crearIdAgenda(usuario);
+        Agenda agenda = new Agenda(nombre, descripcion, fecha, usuario, id);
+        
+        if(AgendaEjecutiva.exiteAgendaNombre(nombre, usuario)){
+             response.sendRedirect("vistaCrearAgenda.jsp");
+        }else if(AgendaEjecutiva.insertarAgenda(agenda)){
             usuario.getAgendaList().add(agenda);
+            AgendaEjecutiva.actualizarUsuario(usuario);
             request.getSession().setAttribute("user", user);
-            request.getSession().setAttribute("agenda", agenda.getNombre());
-            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda.getNombre()));
+            request.getSession().setAttribute("agenda", agenda.getAgendaPK().getId());
+            request.getSession().setAttribute("agendas", usuario.agendasToHtmlFormat(agenda.getAgendaPK().getId()));
             response.sendRedirect("vistaPrincipal.jsp");
         }
+    }
+    
+    public int crearIdAgenda(Usuario u){
+        if(u.getAgendaList().isEmpty()){
+            return 0;
+        }else{
+            return (u.getAgendaList().get((u.getAgendaList().size())-1).getAgendaPK().getId())+1;
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
